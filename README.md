@@ -67,6 +67,22 @@ Win Rate × Average Win
 
 A positive result is not proof that the strategy will remain profitable. It means the supplied backtest numbers have positive expectancy and are worth testing further.
 
+## MT5-style audit report
+
+Select **MT5-style report** after completing an audit to generate a dense Strategy Tester-inspired report containing:
+
+- Test configuration and strategy notes
+- Audit verdict and completion rate
+- Pass, Review, and Fail gate totals
+- User-supplied win rate, reward/risk, break-even rate, and expectancy
+- Gate-by-gate results
+- Detailed checklist status
+- Observed stop signs
+
+The report can be previewed, printed or saved as PDF, and downloaded as a standalone HTML file. Missing trading statistics remain blank instead of being estimated or invented.
+
+This is an MT5-inspired audit layout, not an exported MetaTrader 5 report.
+
 ## Features
 
 - Responsive flowchart for desktop and mobile
@@ -77,7 +93,8 @@ A positive result is not proof that the strategy will remain profitable. It mean
 - Pass, Review, or Fail decision for every stage
 - Final workflow verdict
 - Browser-saved progress
-- Printable report
+- MT5-style report preview, PDF printing, and standalone HTML download
+- Printable checklist
 - JSON export
 - No dependencies, account, backend, or build step
 
