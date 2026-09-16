@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light">
-  <title>Quant Strategy Audit Workflow</title>
+  <title>Trading Strategy Audit Workflow</title>
   <style>
     :root {
       --ink: #101625;
@@ -48,7 +48,7 @@
     }
 
     .shell { width: min(1180px, calc(100% - 32px)); margin: 0 auto; }
-    header { position: relative; padding: 54px 0 36px; overflow: hidden; }
+    header { position: relative; padding: 100px 0 36px; overflow: hidden; }
     header::after {
       content: "";
       position: absolute;
@@ -100,6 +100,18 @@
       border-bottom: 2px solid var(--ink);
     }
     .overview-row { display: block; }
+    .progress-dock {
+      position: fixed;
+      top: 14px;
+      left: 14px;
+      z-index: 1000;
+      width: min(230px, calc(50vw - 24px));
+      padding: 10px 12px;
+      border: 3px solid var(--ink);
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 5px 5px 0 var(--red-vivid);
+    }
     .progress-label { display: flex; justify-content: space-between; gap: 10px; font-size: 13px; font-weight: 750; }
     .progress-track { height: 10px; margin-top: 7px; overflow: hidden; border: 2px solid var(--ink); border-radius: 99px; background: #fff; }
     .progress-fill { width: 0; height: 100%; border-radius: inherit; background: var(--red-vivid); transition: width .25s ease; }
@@ -167,6 +179,27 @@
     .gate-jump[data-state="pass"] .node-state::after { content: "Pass"; }
     .gate-jump[data-state="fail"] .node-state::after { content: "Fail"; }
     .gate-jump[data-state="review"] .node-state::after { content: "Review"; }
+    .mode-toggle {
+      position: fixed;
+      top: 14px;
+      right: 14px;
+      z-index: 1001;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 48px;
+      padding: 10px 15px;
+      border: 3px solid var(--ink);
+      border-radius: 14px;
+      background: var(--yellow);
+      color: var(--ink);
+      box-shadow: 5px 5px 0 var(--blue);
+      font-size: 13px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+    .mode-toggle::before { content: "↔"; display: grid; place-items: center; width: 25px; height: 25px; border-radius: 50%; background: var(--ink); color: #fff; }
+    .mode-toggle:hover { transform: translate(-2px, -2px); box-shadow: 8px 8px 0 var(--blue); }
 
     main { padding: 34px 0 70px; }
     .panel {
@@ -305,6 +338,18 @@
     }
     .flag input { flex: 0 0 auto; width: 17px; height: 17px; margin: 1px 0 0; accent-color: var(--red); }
 
+    .edge-calculator { margin-top: 20px; padding: 18px; border: 3px solid var(--ink); border-radius: 16px; background: var(--yellow-soft); box-shadow: 6px 6px 0 var(--blue); }
+    .edge-calculator h3 { margin: 0; font-size: 18px; letter-spacing: -.02em; }
+    .edge-calculator > p { margin: 4px 0 14px; color: var(--muted); font-size: 12px; }
+    .calc-fields { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; }
+    .calc-fields label { display: grid; gap: 5px; font-size: 11px; font-weight: 850; }
+    .calc-fields input { width: 100%; min-height: 42px; padding: 8px 10px; border: 2px solid var(--ink); border-radius: 9px; background: #fff; }
+    .calc-results { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; margin-top: 12px; }
+    .calc-result { padding: 11px; border: 2px solid var(--ink); border-radius: 10px; background: #fff; }
+    .calc-result small { display: block; color: var(--muted); font-size: 10px; font-weight: 850; text-transform: uppercase; }
+    .calc-result strong { display: block; margin-top: 3px; font-size: 20px; }
+    .calc-note { margin: 12px 0 0; padding: 10px 12px; border-radius: 9px; background: var(--ink); color: #fff; font-size: 12px; font-weight: 700; }
+
     .verdict-panel { position: relative; overflow: hidden; padding: 28px; border: 3px solid var(--ink); background: var(--blue); color: #fff; box-shadow: 9px 9px 0 var(--yellow); }
     .verdict-panel::after { content: ""; position: absolute; right: -30px; bottom: -45px; width: 150px; height: 150px; border-radius: 50%; background: var(--red-vivid); opacity: .95; }
     .verdict-grid { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center; }
@@ -335,10 +380,11 @@
       .fields { grid-template-columns: repeat(2, 1fr); }
       .thesis { grid-column: span 2; }
       .checklist, .flag-grid { grid-template-columns: 1fr; }
+      .calc-fields { grid-template-columns: repeat(2, 1fr); }
     }
     @media (max-width: 720px) {
       .shell { width: min(100% - 20px, 1180px); }
-      header { padding-top: 34px; }
+      header { padding-top: 94px; }
       header::after { right: -30px; width: 78px; height: 78px; border-width: 14px; }
       .gate-strip { grid-template-columns: 1fr; gap: 34px; margin-inline: 8px; }
       .gate-strip::before { top: 5%; bottom: 5%; left: 24px; right: auto; width: 4px; height: auto; transform: none; }
@@ -360,10 +406,15 @@
       .decision button { flex: 1; }
       .verdict-grid { grid-template-columns: 1fr; }
       .verdict-actions { justify-content: flex-start; }
+      .progress-dock { top: 10px; left: 10px; width: 132px; padding: 8px 9px; box-shadow: 4px 4px 0 var(--red-vivid); }
+      .progress-label { font-size: 11px; }
+      .mode-toggle { top: 10px; right: 10px; max-width: calc(100vw - 166px); min-height: 45px; padding: 8px 10px; box-shadow: 4px 4px 0 var(--blue); font-size: 11px; }
+      .mode-toggle::before { width: 21px; height: 21px; flex: 0 0 auto; }
+      .calc-fields, .calc-results { grid-template-columns: 1fr; }
     }
     @media print {
       body { background: #fff; }
-      .overview, .verdict-actions, .chevron, .info { display: none !important; }
+      .overview, .mode-toggle, .verdict-actions, .chevron, .info { display: none !important; }
       .shell { width: 100%; }
       header { padding-top: 0; }
       .panel { box-shadow: none; break-inside: avoid; }
@@ -372,17 +423,18 @@
   </style>
 </head>
 <body>
+  <button class="mode-toggle" id="modeToggle" type="button" aria-pressed="false">Switch to Quant Mode</button>
   <header class="shell">
-    <span class="eyebrow">Quant due diligence</span>
-    <h1>Trust the process.<br>Not the equity curve.</h1>
-    <p class="lede">A five-gate workflow for deciding whether a TradingView Pine strategy is legitimate, robust and ready for real capital.</p>
+    <span class="eyebrow" id="headerEyebrow">Trading strategy check</span>
+    <h1 id="headerTitle">Is it actually<br>worth trading?</h1>
+    <p class="lede" id="headerLede">A plain-language workflow that takes you from “the code runs” to “the numbers make sense” before you risk real money.</p>
     <div class="notice"><strong>Rule:</strong><span>A beautiful backtest is only a hypothesis. One hard failure overrides every performance metric.</span></div>
   </header>
 
   <nav class="overview" aria-label="Audit progress">
     <div class="shell overview-row">
-      <div>
-        <div class="progress-label"><span>Checklist progress</span><span id="progressText">0%</span></div>
+      <div class="progress-dock">
+        <div class="progress-label"><span>Progress</span><span id="progressText">0%</span></div>
         <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
       </div>
       <div class="gate-strip" id="gateStrip"></div>
@@ -428,7 +480,7 @@
   <footer class="shell">Research checklist only — not investment advice. Confirm assumptions with actual broker and exchange data before risking capital.</footer>
 
   <script>
-    const gates = [
+    const quantGates = [
       {
         id: 'integrity', title: 'Code integrity', short: 'Integrity', subtitle: 'Prove the script is honest before judging returns.',
         intro: 'Audit what information exists at the moment each signal is created. Repainting is not automatically wrong; hidden future information is.',
@@ -575,13 +627,103 @@
       }
     ];
 
+    const normalGates = [
+      {
+        id: 'normal-code', title: 'Does the code work?', short: 'Code works', subtitle: 'It loads, runs and places the trades you expect.',
+        intro: 'Do not study performance yet. First confirm that the Pine script itself behaves like the trading idea in your head.',
+        sections: [
+          { title: 'Quick code check', items: [
+            ['The script loads without an error', 'Add it to the chart and confirm TradingView shows no compiler or runtime error.'],
+            ['It is a strategy, not only an indicator', 'A strategy uses strategy() and produces a Strategy Tester report. An indicator alone cannot prove performance.'],
+            ['Buy and sell marks appear where expected', 'Open several trades on the chart and compare them with the written rules.'],
+            ['Entries, exits and stops are visible', 'You should be able to explain why every sampled trade opened and closed.'],
+            ['Changing an input changes the result logically', 'Settings should affect the intended rule instead of causing random or impossible behavior.']
+          ]}
+        ],
+        flags: ['The script shows an error', 'No trades appear in Strategy Tester', 'Trades happen opposite to the written rules', 'Position size is impossible for the account']
+      },
+      {
+        id: 'normal-signals', title: 'Can you trust the signals?', short: 'Signals honest', subtitle: 'Make sure the script is not using future information.',
+        intro: 'A signal must stay where it appeared. If history changes after a reload, the backtest may be showing trades you could not take live.',
+        sections: [
+          { title: 'Signal check', items: [
+            ['Old signals stay after reloading the chart', 'Take a screenshot, refresh TradingView and compare the signal locations.'],
+            ['The signal waits for candle close when required', 'If the strategy trades on closing data, alerts should also use once per bar close.'],
+            ['No signal is moved backward to a better candle', 'Pivot and zigzag signals often become known several candles after the turning point.'],
+            ['The test uses normal candles', 'Use standard OHLC candles first—not Renko, Heikin Ashi or another synthetic price.'],
+            ['At least 20 trades were checked by hand', 'Confirm the signal, entry price and exit price on a sample across the test period.']
+          ]}
+        ],
+        flags: ['Signals disappear or move after reload', 'The script knows a future high, low or close', 'A pivot is traded before it is confirmed', 'The result depends on synthetic candle prices']
+      },
+      {
+        id: 'normal-backtest', title: 'Run a fair backtest', short: 'Backtest fairly', subtitle: 'Test enough history and include the costs you pay.',
+        intro: 'Use the market and timeframe you will actually trade. A fair backtest includes bad periods, fees and imperfect fills.',
+        sections: [
+          { title: 'Backtest setup', items: [
+            ['The symbol and timeframe match the trading plan', 'BTC on one exchange or timeframe can behave differently from another.'],
+            ['The test includes rising, falling and sideways markets', 'Avoid selecting only the period where the strategy looks best.'],
+            ['Commission is included on entry and exit', 'Use your real exchange or broker fee tier.'],
+            ['Spread and slippage are included', 'Market orders rarely fill at the exact theoretical price.'],
+            ['There are enough trades to judge', 'Fewer than 30 trades is anecdotal. Aim for 100 or more when the strategy frequency allows it.'],
+            ['The result is compared with buy and hold', 'A complex strategy should justify itself against a simpler alternative.']
+          ]}
+        ],
+        flags: ['The strategy only profits with zero costs', 'Only the best-looking dates were tested', 'There are too few trades for a conclusion', 'Small slippage turns the result negative']
+      },
+      {
+        id: 'normal-edge', title: 'Do the numbers make sense?', short: 'Check the edge', subtitle: 'Combine win rate with reward/risk—not win rate alone.',
+        intro: 'A low win-rate strategy can work when winners are much larger than losers. A high win-rate strategy can still lose when its losses are huge.',
+        calculator: true,
+        sections: [
+          { title: 'Numbers to record', items: [
+            ['Win rate is recorded', 'Winning trades divided by all closed trades. It is only one part of the answer.'],
+            ['Average win and average loss are recorded', 'Use average trade results after costs, preferably measured in the same unit.'],
+            ['Reward/risk and break-even win rate are calculated', 'Reward/risk is average win divided by average loss. Compare your win rate with the break-even rate.'],
+            ['Expectancy is positive after costs', 'Positive expectancy means the average trade is profitable over a sufficiently large sample.'],
+            ['Maximum drawdown is affordable', 'Assume a future drawdown can be worse than the backtest record.'],
+            ['Profit does not come from only a few trades', 'Remove the best few trades and see whether the strategy still has a believable edge.']
+          ]}
+        ],
+        flags: ['Expectancy is zero or negative after costs', 'One or two trades create most of the profit', 'Maximum drawdown would force you to stop', 'The strategy loses to buy and hold at similar risk']
+      },
+      {
+        id: 'normal-live', title: 'Prove it before going live', short: 'Paper → small live', subtitle: 'Stress it, paper trade it, then risk very little.',
+        intro: 'Do not jump from a backtest to full size. First try to break the result, then confirm that live alerts and fills resemble the test.',
+        sections: [
+          { title: 'Final proof', items: [
+            ['Nearby settings still work', 'A useful strategy should not collapse when one setting changes slightly.'],
+            ['A later unseen period still works', 'Test dates that were not used while building or adjusting the strategy.'],
+            ['Paper trades match the backtest logic', 'Compare signal time, intended entry, actual fill and exit.'],
+            ['Realistic live costs still leave an edge', 'Update the backtest with slippage and fees observed during paper trading.'],
+            ['Risk per trade is small and fixed', 'For many traders, 0.25%–1% of equity is a cautious starting range—not a guarantee of safety.'],
+            ['A daily loss limit and kill switch exist', 'Know when the system must stop opening new positions.'],
+            ['Live trading begins at minimum size', 'Scale only after enough live trades match the expected behavior.']
+          ]}
+        ],
+        flags: ['The unseen test loses money', 'Paper trades do not match the backtest', 'There is no maximum loss rule', 'Deployment starts at full intended size']
+      }
+    ];
+
     const storageKey = 'quant-audit-workflow-v1';
-    let state = { checks: {}, flags: {}, decisions: {}, fields: {} };
+    let state = { mode: 'normal', checks: {}, flags: {}, decisions: {}, fields: {}, metrics: {} };
     try { state = { ...state, ...JSON.parse(localStorage.getItem(storageKey) || '{}') }; } catch (_) {}
+    if (!['normal', 'quant'].includes(state.mode)) state.mode = 'normal';
+    state.metrics ||= {};
+    let gates = state.mode === 'quant' ? quantGates : normalGates;
 
     const esc = value => String(value).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
 
     function render() {
+      gates = state.mode === 'quant' ? quantGates : normalGates;
+      const isQuant = state.mode === 'quant';
+      document.getElementById('modeToggle').textContent = isQuant ? 'Switch to Normal Trader' : 'Switch to Quant Mode';
+      document.getElementById('modeToggle').setAttribute('aria-pressed', String(isQuant));
+      document.getElementById('headerEyebrow').textContent = isQuant ? 'Quant due diligence' : 'Trading strategy check';
+      document.getElementById('headerTitle').innerHTML = isQuant ? 'Trust the process.<br>Not the equity curve.' : 'Is it actually<br>worth trading?';
+      document.getElementById('headerLede').textContent = isQuant
+        ? 'A five-gate workflow for deciding whether a TradingView Pine strategy is legitimate, robust and ready for real capital.'
+        : 'A plain-language workflow that takes you from “the code runs” to “the numbers make sense” before you risk real money.';
       document.getElementById('gateStrip').innerHTML = gates.map((g, i) => `
         <button class="gate-jump" data-target="${g.id}" data-step="${i + 1}" data-state="${state.decisions[g.id] || ''}" aria-label="Open Gate ${i + 1}: ${esc(g.title)}">
           <small>Gate ${i + 1}</small><strong>${esc(g.short)}</strong><span>${esc(g.subtitle)}</span><em class="node-state" aria-hidden="true"></em>
@@ -609,7 +751,23 @@
                 return `<label class="check"><input type="checkbox" data-check="${key}" ${state.checks[key] ? 'checked' : ''}><span class="check-text">${esc(item[0])}</span><span class="info" tabindex="0" role="button" aria-label="More information">i<span class="tooltip" role="tooltip">${esc(item[1])}</span></span></label>`;
               }).join('')}
             </div></section>`).join('')}
-            <section class="red-flags"><h3>Hard-fail scan</h3><p>Tick only when the problem is present. Any observed red flag forces this gate to Fail.</p><div class="flag-grid">
+            ${g.calculator ? `<section class="edge-calculator" aria-labelledby="calculatorTitle">
+              <h3 id="calculatorTitle">Quick edge calculator</h3>
+              <p>Use the same unit for average win, average loss and cost—R, %, dollars or points.</p>
+              <div class="calc-fields">
+                <label>Win rate %<input type="number" min="0" max="100" step="0.1" inputmode="decimal" data-metric="winRate" placeholder="45"></label>
+                <label>Average win<input type="number" min="0" step="0.01" inputmode="decimal" data-metric="avgWin" placeholder="2"></label>
+                <label>Average loss<input type="number" min="0" step="0.01" inputmode="decimal" data-metric="avgLoss" placeholder="1"></label>
+                <label>Cost per trade<input type="number" min="0" step="0.01" inputmode="decimal" data-metric="cost" placeholder="0.05"></label>
+              </div>
+              <div class="calc-results">
+                <div class="calc-result"><small>Reward / risk</small><strong id="rrResult">—</strong></div>
+                <div class="calc-result"><small>Break-even win rate</small><strong id="breakEvenResult">—</strong></div>
+                <div class="calc-result"><small>Expectancy / trade</small><strong id="expectancyResult">—</strong></div>
+              </div>
+              <p class="calc-note" id="calcNote">Enter your results from Strategy Tester. Win rate by itself cannot tell you if the strategy has an edge.</p>
+            </section>` : ''}
+            <section class="red-flags"><h3>${isQuant ? 'Hard-fail scan' : 'Stop signs'}</h3><p>Tick only when the problem is present. Any observed red flag forces this gate to Fail.</p><div class="flag-grid">
               ${g.flags.map((flag, i) => { const key = `${g.id}-flag-${i}`; return `<label class="flag"><input type="checkbox" data-flag="${key}" data-gate="${g.id}" ${state.flags[key] ? 'checked' : ''}><span>${esc(flag)}</span></label>`; }).join('')}
             </div></section>
           </div>
@@ -617,7 +775,9 @@
       }).join('');
 
       document.querySelectorAll('[data-save]').forEach(el => { el.value = state.fields[el.dataset.save] || ''; });
+      document.querySelectorAll('[data-metric]').forEach(el => { el.value = state.metrics[el.dataset.metric] ?? ''; });
       bindEvents();
+      updateCalculator();
       updateUI();
     }
 
@@ -645,6 +805,11 @@
       document.querySelectorAll('[data-save]').forEach(el => el.addEventListener('input', () => {
         state.fields[el.dataset.save] = el.value; persist();
       }));
+      document.querySelectorAll('[data-metric]').forEach(el => el.addEventListener('input', () => {
+        state.metrics[el.dataset.metric] = el.value;
+        persist();
+        updateCalculator();
+      }));
       document.querySelectorAll('.info').forEach(el => {
         el.addEventListener('click', event => { event.preventDefault(); event.stopPropagation(); el.dataset.open = el.dataset.open === 'true' ? 'false' : 'true'; });
         el.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); el.click(); } });
@@ -652,6 +817,33 @@
     }
 
     function persist() { localStorage.setItem(storageKey, JSON.stringify(state)); }
+
+    function updateCalculator() {
+      const rrEl = document.getElementById('rrResult');
+      if (!rrEl) return;
+      const winRate = Number(state.metrics.winRate);
+      const avgWin = Number(state.metrics.avgWin);
+      const avgLoss = Number(state.metrics.avgLoss);
+      const cost = Number(state.metrics.cost || 0);
+      const breakEvenEl = document.getElementById('breakEvenResult');
+      const expectancyEl = document.getElementById('expectancyResult');
+      const noteEl = document.getElementById('calcNote');
+      if (!(winRate >= 0 && winRate <= 100 && avgWin > 0 && avgLoss > 0 && cost >= 0)) {
+        rrEl.textContent = breakEvenEl.textContent = expectancyEl.textContent = '—';
+        noteEl.textContent = 'Enter your results from Strategy Tester. Win rate by itself cannot tell you if the strategy has an edge.';
+        return;
+      }
+      const p = winRate / 100;
+      const rr = avgWin / avgLoss;
+      const breakEven = ((avgLoss + cost) / (avgWin + avgLoss)) * 100;
+      const expectancy = p * avgWin - (1 - p) * avgLoss - cost;
+      rrEl.textContent = `${rr.toFixed(2)} : 1`;
+      breakEvenEl.textContent = `${breakEven.toFixed(1)}%`;
+      expectancyEl.textContent = `${expectancy >= 0 ? '+' : ''}${expectancy.toFixed(3)}`;
+      noteEl.textContent = expectancy > 0
+        ? `Positive on paper: your ${winRate.toFixed(1)}% win rate is above the ${breakEven.toFixed(1)}% break-even rate. Now test whether it survives unseen data and paper trading.`
+        : `No edge with these inputs: your ${winRate.toFixed(1)}% win rate is not enough after losses and costs. Improve the system or reject it.`;
+    }
 
     function updateUI() {
       const allKeys = gates.flatMap(g => g.sections.flatMap((s, si) => s.items.map((_, ii) => `${g.id}-${si}-${ii}`)));
@@ -688,16 +880,25 @@
       document.getElementById('verdictReason').textContent = reason;
     }
 
+    document.getElementById('modeToggle').addEventListener('click', () => {
+      state.mode = state.mode === 'quant' ? 'normal' : 'quant';
+      persist();
+      render();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
     document.getElementById('resetBtn').addEventListener('click', () => {
       if (!confirm('Reset every field, decision and checklist item?')) return;
-      state = { checks: {}, flags: {}, decisions: {}, fields: {} };
+      state = { mode: state.mode, checks: {}, flags: {}, decisions: {}, fields: {}, metrics: {} };
       persist(); render();
     });
 
     document.getElementById('exportBtn').addEventListener('click', () => {
       const output = {
         exportedAt: new Date().toISOString(),
+        mode: state.mode,
         context: state.fields,
+        edgeCalculator: state.metrics,
         verdict: document.getElementById('verdict').textContent,
         gateDecisions: state.decisions,
         completedChecks: Object.entries(state.checks).filter(([,v]) => v).map(([k]) => k),
