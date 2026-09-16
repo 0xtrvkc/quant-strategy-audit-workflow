@@ -1,0 +1,718 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Quant Strategy Audit Workflow</title>
+  <style>
+    :root {
+      --ink: #101625;
+      --muted: #5d6473;
+      --paper: #f4f7ff;
+      --card: #ffffff;
+      --line: #cbd3e3;
+      --yellow: #ffd400;
+      --yellow-soft: #fff4a8;
+      --blue: #1769ff;
+      --blue-soft: #dce8ff;
+      --red-vivid: #ff3b30;
+      --red-vivid-soft: #ffe0dd;
+      --green: #17734a;
+      --green-soft: #dff3e8;
+      --red: #b2332c;
+      --red-soft: #f9dfdc;
+      --orange: #92520a;
+      --orange-soft: #f9e7c8;
+      --shadow: 0 18px 50px rgba(22, 45, 99, .10);
+      --radius: 20px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 8% 0%, rgba(255, 212, 0, .32), transparent 27rem),
+        radial-gradient(circle at 94% 7%, rgba(23, 105, 255, .18), transparent 30rem),
+        var(--paper);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    button, input, select { font: inherit; }
+    button { color: inherit; }
+    button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible, .info:focus-visible {
+      outline: 3px solid rgba(23, 115, 74, .3);
+      outline-offset: 3px;
+    }
+
+    .shell { width: min(1180px, calc(100% - 32px)); margin: 0 auto; }
+    header { position: relative; padding: 54px 0 36px; overflow: hidden; }
+    header::after {
+      content: "";
+      position: absolute;
+      right: 2%;
+      bottom: 18px;
+      width: 94px;
+      height: 94px;
+      border: 18px solid var(--red-vivid);
+      border-radius: 50%;
+      opacity: .95;
+      pointer-events: none;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 11px;
+      border: 1px solid var(--ink);
+      border-radius: 999px;
+      background: var(--yellow);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+    h1 { max-width: 880px; margin: 20px 0 14px; font-size: clamp(38px, 7vw, 76px); line-height: .96; letter-spacing: -.055em; }
+    .lede { max-width: 700px; margin: 0; color: var(--muted); font-size: clamp(16px, 2vw, 20px); }
+    .notice {
+      display: flex;
+      gap: 11px;
+      align-items: flex-start;
+      margin-top: 22px;
+      max-width: 750px;
+      padding: 13px 15px;
+      border: 2px solid var(--ink);
+      border-left: 9px solid var(--red-vivid);
+      border-radius: 0 12px 12px 0;
+      background: #fff;
+      box-shadow: 5px 5px 0 var(--yellow);
+      font-size: 14px;
+    }
+
+    .overview {
+      position: relative;
+      z-index: 20;
+      padding: 28px 0 34px;
+      background: #fff;
+      border-top: 2px solid var(--ink);
+      border-bottom: 2px solid var(--ink);
+    }
+    .overview-row { display: block; }
+    .progress-label { display: flex; justify-content: space-between; gap: 10px; font-size: 13px; font-weight: 750; }
+    .progress-track { height: 10px; margin-top: 7px; overflow: hidden; border: 2px solid var(--ink); border-radius: 99px; background: #fff; }
+    .progress-fill { width: 0; height: 100%; border-radius: inherit; background: var(--red-vivid); transition: width .25s ease; }
+    .gate-strip { position: relative; display: grid; grid-template-columns: repeat(5, 1fr); gap: 44px; margin-top: 25px; }
+    .gate-strip::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 7%;
+      right: 7%;
+      height: 4px;
+      background: var(--ink);
+      transform: translateY(-50%);
+    }
+    .gate-jump {
+      --node-color: var(--yellow);
+      position: relative;
+      z-index: 1;
+      min-width: 0;
+      min-height: 132px;
+      padding: 15px 14px;
+      border: 3px solid var(--ink);
+      border-radius: 17px;
+      background: var(--node-color);
+      box-shadow: 7px 7px 0 var(--ink);
+      cursor: pointer;
+      text-align: left;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .gate-jump:nth-child(3n+1) { --node-color: var(--blue); color: #fff; }
+    .gate-jump:nth-child(3n+2) { --node-color: var(--yellow); color: var(--ink); }
+    .gate-jump:nth-child(3n) { --node-color: var(--red-vivid); color: #fff; }
+    .gate-jump:hover { transform: translate(-2px, -2px); box-shadow: 10px 10px 0 var(--ink); }
+    .gate-jump:not(:last-child)::after {
+      content: "➜";
+      position: absolute;
+      left: calc(100% + 11px);
+      top: 50%;
+      width: 31px;
+      color: var(--ink);
+      font-size: 27px;
+      line-height: 1;
+      text-align: center;
+      transform: translateY(-50%);
+    }
+    .gate-jump small { display: block; color: inherit; font-size: 10px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; opacity: .78; }
+    .gate-jump strong { display: block; margin-top: 14px; font-size: 18px; line-height: 1.05; letter-spacing: -.02em; }
+    .gate-jump > span { display: block; margin-top: 7px; overflow: hidden; font-size: 11px; font-weight: 720; line-height: 1.3; opacity: .82; }
+    .node-state {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      min-width: 19px;
+      height: 19px;
+      padding: 0 5px;
+      border: 2px solid currentColor;
+      border-radius: 99px;
+      font-size: 9px;
+      font-style: normal;
+      font-weight: 950;
+      line-height: 15px;
+      text-transform: uppercase;
+    }
+    .gate-jump[data-state=""] .node-state { display: none; }
+    .gate-jump[data-state="pass"] .node-state::after { content: "Pass"; }
+    .gate-jump[data-state="fail"] .node-state::after { content: "Fail"; }
+    .gate-jump[data-state="review"] .node-state::after { content: "Review"; }
+
+    main { padding: 34px 0 70px; }
+    .panel {
+      margin-bottom: 22px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, .95);
+      box-shadow: var(--shadow);
+    }
+    .setup { padding: 24px; }
+    .section-head { display: flex; justify-content: space-between; gap: 18px; align-items: flex-start; margin-bottom: 20px; }
+    .section-head h2 { margin: 0; font-size: 24px; letter-spacing: -.025em; }
+    .section-head p { max-width: 560px; margin: 5px 0 0; color: var(--muted); font-size: 14px; }
+    .fields { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    label.field { display: grid; gap: 6px; color: var(--muted); font-size: 12px; font-weight: 750; }
+    .field input, .field select {
+      width: 100%;
+      min-height: 44px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: #fff;
+      color: var(--ink);
+      padding: 10px 12px;
+    }
+    .thesis { grid-column: span 4; }
+
+    details.gate { --gate-color: var(--blue); overflow: visible; border-top: 9px solid var(--gate-color); }
+    #gates details.gate:nth-child(3n+1) { --gate-color: var(--blue); }
+    #gates details.gate:nth-child(3n+2) { --gate-color: var(--yellow); }
+    #gates details.gate:nth-child(3n) { --gate-color: var(--red-vivid); }
+    details.gate > summary {
+      display: grid;
+      grid-template-columns: 52px minmax(0, 1fr) auto;
+      gap: 16px;
+      align-items: center;
+      padding: 20px 22px;
+      cursor: pointer;
+      list-style: none;
+    }
+    details.gate > summary::-webkit-details-marker { display: none; }
+    .gate-number {
+      display: grid;
+      place-items: center;
+      width: 52px;
+      height: 52px;
+      border-radius: 15px;
+      border: 2px solid var(--ink);
+      background: var(--gate-color);
+      color: #fff;
+      font-size: 21px;
+      font-weight: 900;
+    }
+    #gates details.gate:nth-child(3n+2) .gate-number { color: var(--ink); }
+    .gate-title h2 { margin: 0; font-size: 22px; letter-spacing: -.025em; }
+    .gate-title p { margin: 3px 0 0; color: var(--muted); font-size: 13px; }
+    .summary-side { display: flex; gap: 10px; align-items: center; }
+    .mini-count { color: var(--muted); font-size: 12px; font-weight: 750; white-space: nowrap; }
+    .chevron { width: 30px; height: 30px; border-radius: 50%; background: #eeeadd; display: grid; place-items: center; transition: transform .2s ease; }
+    details[open] .chevron { transform: rotate(180deg); }
+    .gate-body { padding: 0 22px 24px; border-top: 1px solid var(--line); }
+    .gate-intro { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 20px; align-items: center; padding: 18px 0; }
+    .gate-intro p { margin: 0; color: var(--muted); font-size: 14px; }
+
+    .decision { display: flex; padding: 4px; border: 1px solid var(--line); border-radius: 12px; background: #f2efe5; }
+    .decision button { padding: 8px 12px; border: 0; border-radius: 8px; background: transparent; font-size: 12px; font-weight: 850; cursor: pointer; }
+    .decision button[aria-pressed="true"][data-value="pass"] { color: #fff; background: var(--green); }
+    .decision button[aria-pressed="true"][data-value="review"] { color: #fff; background: var(--orange); }
+    .decision button[aria-pressed="true"][data-value="fail"] { color: #fff; background: var(--red); }
+
+    .subsection { margin-top: 18px; }
+    .subsection h3 { margin: 0 0 10px; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; }
+    .checklist { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    .check {
+      position: relative;
+      display: grid;
+      grid-template-columns: 22px minmax(0, 1fr) 25px;
+      gap: 10px;
+      align-items: center;
+      min-height: 52px;
+      padding: 10px 10px 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+    }
+    .check:has(input:checked) { border-color: #a7cdb9; background: #f2faf5; }
+    .check input { width: 18px; height: 18px; margin: 0; accent-color: var(--green); cursor: pointer; }
+    .check-text { font-size: 13px; font-weight: 650; }
+    .info {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: 25px;
+      height: 25px;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      background: #f6f3e8;
+      color: var(--muted);
+      font: 800 12px/1 ui-sans-serif, system-ui;
+      cursor: help;
+    }
+    .tooltip {
+      position: absolute;
+      right: -5px;
+      bottom: calc(100% + 10px);
+      z-index: 30;
+      width: min(280px, 70vw);
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: var(--ink);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1.45;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity .15s ease, transform .15s ease;
+    }
+    .info:hover .tooltip, .info:focus .tooltip, .info[data-open="true"] .tooltip { opacity: 1; transform: translateY(0); }
+
+    .red-flags { margin-top: 20px; padding: 16px; border: 1px solid #e4aaa4; border-radius: 14px; background: var(--red-soft); }
+    .red-flags h3 { margin: 0 0 4px; color: #84251f; font-size: 14px; }
+    .red-flags > p { margin: 0 0 12px; color: #8f4a44; font-size: 12px; }
+    .flag-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    .flag {
+      display: flex;
+      gap: 9px;
+      align-items: flex-start;
+      padding: 9px 10px;
+      border-radius: 9px;
+      background: rgba(255,255,255,.62);
+      color: #70241f;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .flag input { flex: 0 0 auto; width: 17px; height: 17px; margin: 1px 0 0; accent-color: var(--red); }
+
+    .verdict-panel { position: relative; overflow: hidden; padding: 28px; border: 3px solid var(--ink); background: var(--blue); color: #fff; box-shadow: 9px 9px 0 var(--yellow); }
+    .verdict-panel::after { content: ""; position: absolute; right: -30px; bottom: -45px; width: 150px; height: 150px; border-radius: 50%; background: var(--red-vivid); opacity: .95; }
+    .verdict-grid { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center; }
+    .verdict-kicker { color: #c7c3b8; font-size: 12px; font-weight: 850; letter-spacing: .1em; text-transform: uppercase; }
+    .verdict { margin: 5px 0 4px; font-size: clamp(29px, 5vw, 50px); line-height: 1; letter-spacing: -.04em; }
+    .verdict-reason { margin: 0; color: #cac7bb; font-size: 14px; }
+    .verdict-actions { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: 9px; justify-content: flex-end; }
+    .action {
+      min-height: 42px;
+      padding: 10px 14px;
+      border: 2px solid #fff;
+      border-radius: 11px;
+      background: transparent;
+      color: #fff;
+      font-weight: 750;
+      cursor: pointer;
+    }
+    .action.primary { border-color: var(--ink); background: var(--yellow); color: var(--ink); box-shadow: 4px 4px 0 var(--ink); }
+    .action:hover { border-color: #fff; }
+    footer { padding: 0 0 50px; color: var(--muted); font-size: 12px; text-align: center; }
+
+    @media (max-width: 850px) {
+      .overview-row { grid-template-columns: 1fr; }
+      .gate-strip { gap: 22px; }
+      .gate-jump { min-height: 118px; padding: 13px 11px; }
+      .gate-jump:not(:last-child)::after { left: calc(100% + 1px); width: 20px; font-size: 20px; }
+      .gate-jump strong { font-size: 15px; }
+      .fields { grid-template-columns: repeat(2, 1fr); }
+      .thesis { grid-column: span 2; }
+      .checklist, .flag-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 720px) {
+      .shell { width: min(100% - 20px, 1180px); }
+      header { padding-top: 34px; }
+      header::after { right: -30px; width: 78px; height: 78px; border-width: 14px; }
+      .gate-strip { grid-template-columns: 1fr; gap: 34px; margin-inline: 8px; }
+      .gate-strip::before { top: 5%; bottom: 5%; left: 24px; right: auto; width: 4px; height: auto; transform: none; }
+      .gate-jump { min-height: 94px; padding: 14px 16px 14px 64px; text-align: left; box-shadow: 6px 6px 0 var(--ink); }
+      .gate-jump::before { content: attr(data-step); position: absolute; left: 13px; top: 50%; display: grid; place-items: center; width: 34px; height: 34px; border: 2px solid currentColor; border-radius: 50%; font-size: 14px; font-weight: 950; transform: translateY(-50%); }
+      .gate-jump:not(:last-child)::after { content: "↓"; left: 12px; top: calc(100% + 10px); width: 30px; font-size: 25px; transform: none; }
+      .gate-jump small { display: none; }
+      .gate-jump strong { margin-top: 0; font-size: 17px; }
+      .gate-jump > span { display: block; margin-top: 5px; }
+      .fields { grid-template-columns: 1fr; }
+      .thesis { grid-column: span 1; }
+      details.gate > summary { grid-template-columns: 42px minmax(0, 1fr) auto; gap: 11px; padding: 16px; }
+      .gate-number { width: 42px; height: 42px; border-radius: 12px; font-size: 17px; }
+      .gate-title h2 { font-size: 17px; }
+      .gate-title p, .mini-count { display: none; }
+      .gate-body { padding: 0 14px 18px; }
+      .gate-intro { grid-template-columns: 1fr; }
+      .decision { width: 100%; }
+      .decision button { flex: 1; }
+      .verdict-grid { grid-template-columns: 1fr; }
+      .verdict-actions { justify-content: flex-start; }
+    }
+    @media print {
+      body { background: #fff; }
+      .overview, .verdict-actions, .chevron, .info { display: none !important; }
+      .shell { width: 100%; }
+      header { padding-top: 0; }
+      .panel { box-shadow: none; break-inside: avoid; }
+      details.gate .gate-body { display: block !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="shell">
+    <span class="eyebrow">Quant due diligence</span>
+    <h1>Trust the process.<br>Not the equity curve.</h1>
+    <p class="lede">A five-gate workflow for deciding whether a TradingView Pine strategy is legitimate, robust and ready for real capital.</p>
+    <div class="notice"><strong>Rule:</strong><span>A beautiful backtest is only a hypothesis. One hard failure overrides every performance metric.</span></div>
+  </header>
+
+  <nav class="overview" aria-label="Audit progress">
+    <div class="shell overview-row">
+      <div>
+        <div class="progress-label"><span>Checklist progress</span><span id="progressText">0%</span></div>
+        <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
+      </div>
+      <div class="gate-strip" id="gateStrip"></div>
+    </div>
+  </nav>
+
+  <main class="shell">
+    <section class="panel setup" aria-labelledby="setupTitle">
+      <div class="section-head">
+        <div><h2 id="setupTitle">Audit context</h2><p>Lock the test conditions before inspecting results. Your notes and checklist progress stay in this browser.</p></div>
+      </div>
+      <div class="fields">
+        <label class="field">Strategy name<input data-save="name" placeholder="e.g. BTC EMA Regime"></label>
+        <label class="field">Symbol<input data-save="symbol" placeholder="e.g. BINANCE:BTCUSDT"></label>
+        <label class="field">Timeframe<input data-save="timeframe" placeholder="e.g. 4H"></label>
+        <label class="field">Test dates<input data-save="dates" placeholder="e.g. 2019–2026"></label>
+        <label class="field">Direction<select data-save="direction"><option value="">Select</option><option>Long only</option><option>Short only</option><option>Long + short</option></select></label>
+        <label class="field">Execution<select data-save="execution"><option value="">Select</option><option>Bar close</option><option>Intrabar</option><option>Mixed</option></select></label>
+        <label class="field">Base cost / side<input data-save="cost" placeholder="e.g. 0.08%"></label>
+        <label class="field">Risk / trade<input data-save="risk" placeholder="e.g. 0.5%"></label>
+        <label class="field thesis">One-sentence edge thesis<input data-save="thesis" placeholder="This strategy expects to earn because…"></label>
+      </div>
+    </section>
+
+    <div id="gates"></div>
+
+    <section class="panel verdict-panel" aria-live="polite">
+      <div class="verdict-grid">
+        <div>
+          <div class="verdict-kicker">Current decision</div>
+          <h2 class="verdict" id="verdict">Audit incomplete</h2>
+          <p class="verdict-reason" id="verdictReason">Start with Gate 1. Set each gate to Pass, Review or Fail after checking the evidence.</p>
+        </div>
+        <div class="verdict-actions">
+          <button class="action" id="resetBtn" type="button">Reset</button>
+          <button class="action" type="button" onclick="window.print()">Print report</button>
+          <button class="action primary" id="exportBtn" type="button">Export JSON</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="shell">Research checklist only — not investment advice. Confirm assumptions with actual broker and exchange data before risking capital.</footer>
+
+  <script>
+    const gates = [
+      {
+        id: 'integrity', title: 'Code integrity', short: 'Integrity', subtitle: 'Prove the script is honest before judging returns.',
+        intro: 'Audit what information exists at the moment each signal is created. Repainting is not automatically wrong; hidden future information is.',
+        sections: [
+          { title: 'Structure', items: [
+            ['Uses strategy() for performance claims', 'An indicator can display signals, but a strategy is needed to model orders and fills.'],
+            ['Pine version and dependencies are documented', 'Record the version and inspect imported libraries or external calculations.'],
+            ['Entry, exit and reversal logic are traceable', 'Every order should map to a visible condition and a known execution time.'],
+            ['All parameters and date filters are visible', 'Hidden symbol or date conditions can manufacture attractive results.'],
+            ['Long and short logic are tested separately', 'One side can hide losses or risks from the other.']
+          ]},
+          { title: 'Timing & data', items: [
+            ['request.security() calls are audited', 'Verify symbol, timeframe, gaps, lookahead and historical offsets.'],
+            ['Higher-timeframe data uses confirmed values', 'Unconfirmed HTF values can change before the higher-timeframe candle closes.'],
+            ['Pivots trigger only after confirmation', 'A pivot is unknowable on the pivot bar; it becomes known several bars later.'],
+            ['Historical and realtime signals match', 'Capture live signals, reload the chart, and compare their time and price.'],
+            ['Alerts and strategy orders use the same timing', 'An intrabar alert cannot be evaluated against a close-only historical trade.'],
+            ['Normal OHLC candles are the primary test', 'Synthetic charts can use prices that were never tradable.']
+          ]}
+        ],
+        flags: [
+          'Unshifted lookahead_on exposes future higher-timeframe values',
+          'Signals or plots are moved backward onto earlier bars',
+          'Realtime signals disappear or move after reload',
+          'Pivot or zigzag turns are traded before confirmation',
+          'varip/intrabar state is presented as a historical backtest',
+          'Synthetic chart prices are treated as executable prices'
+        ]
+      },
+      {
+        id: 'execution', title: 'Execution realism', short: 'Execution', subtitle: 'Make the simulated trade possible in the real market.',
+        intro: 'Rebuild the economics of each fill. The default broker emulator, zero commission and zero slippage are research conveniences—not reality.',
+        sections: [
+          { title: 'Orders & fills', items: [
+            ['Earliest executable time is identified', 'A signal calculated at the close cannot fill earlier than that close.'],
+            ['Same-bar stop/target ordering is tested', 'OHLC bars may not reveal which level was touched first.'],
+            ['Stops include gap risk', 'A stop can fill beyond its trigger after a gap.'],
+            ['Limit fills require realistic penetration', 'A candle touching a limit price does not prove your queue position was filled.'],
+            ['Bar Magnifier or lower-timeframe validation is used', 'Intrabar data improves tests involving stops, limits and same-bar exits.'],
+            ['Pyramiding, reversal and partial exits are intentional', 'Default order behavior may create exposure different from the intended system.']
+          ]},
+          { title: 'Costs & capacity', items: [
+            ['Commission is charged on entry and exit', 'Use the actual fee tier and distinguish maker from taker execution.'],
+            ['Spread and slippage are modeled', 'Test normal and stressed conditions; slippage is not constant in reality.'],
+            ['Funding, borrow or rollover costs are included', 'These can dominate slow or highly leveraged strategies.'],
+            ['Position size respects lot and capital constraints', 'Round to tradable quantities and cap leverage, margin and total exposure.'],
+            ['Base and stress cost scenarios remain acceptable', 'A fragile edge that vanishes under small cost changes is unlikely to survive live trading.'],
+            ['Liquidity and strategy capacity are plausible', 'Order size should be small enough relative to available market depth and volume.']
+          ]}
+        ],
+        flags: [
+          'Results require zero commission or zero slippage',
+          'Limit orders assume every price touch fills',
+          'Same candle contains ambiguous entry and exit fills',
+          'Position sizing exceeds available capital or margin',
+          'Small cost increase makes expectancy negative',
+          'Trade size is unrealistic for market liquidity'
+        ]
+      },
+      {
+        id: 'evidence', title: 'Statistical evidence', short: 'Evidence', subtitle: 'Measure the edge, uncertainty and concentration.',
+        intro: 'Net profit alone is weak evidence. Evaluate risk-adjusted return, trade distribution, sample size and dependence on exceptional trades.',
+        sections: [
+          { title: 'Performance', items: [
+            ['Net return is positive after base costs', 'Report both currency and percentage results after every modeled cost.'],
+            ['CAGR beats an appropriate benchmark', 'Compare against buy-and-hold, cash or another relevant passive alternative.'],
+            ['Sharpe, Sortino and MAR are reported', 'Use several views of return relative to volatility, downside risk and drawdown.'],
+            ['Maximum intrabar drawdown is tolerable', 'Closed-equity drawdown alone may hide severe open-position losses.'],
+            ['Drawdown duration is acceptable', 'A strategy can be solvent yet psychologically or operationally untradeable.'],
+            ['Long and short contributions are transparent', 'Separate the two sides to reveal where the edge and risk actually originate.']
+          ]},
+          { title: 'Trade distribution', items: [
+            ['Expectancy and profit factor are positive after costs', 'Expectancy combines win probability with average win and average loss.'],
+            ['Sample spans multiple market regimes', 'Include rising, falling, ranging, volatile and quiet periods when relevant.'],
+            ['Trade count is sufficient for the strategy frequency', 'A small or highly correlated sample produces wide uncertainty.'],
+            ['Median trade and return distribution are inspected', 'The average can be distorted by a few large winners.'],
+            ['Top 10 trades do not dominate total profit', 'High concentration makes the result dependent on rare, possibly accidental events.'],
+            ['MAE, MFE and consecutive losses are measured', 'These reveal stop behavior, missed opportunity and realistic losing streaks.']
+          ]}
+        ],
+        flags: [
+          'Strategy is negative after realistic costs',
+          'Profit comes mainly from one period or a few trades',
+          'Sample size is too small for a stable conclusion',
+          'Drawdown or margin requirement is not survivable',
+          'Performance is worse than a simpler benchmark at similar risk'
+        ]
+      },
+      {
+        id: 'robustness', title: 'Robustness', short: 'Robustness', subtitle: 'Try to break the edge outside the optimized sample.',
+        intro: 'A real effect should degrade gradually. It should not depend on one parameter, one narrow period or repeated inspection of the test set.',
+        sections: [
+          { title: 'Unseen data', items: [
+            ['Final out-of-sample data was locked in advance', 'Looking at the test period while developing turns it into training data.'],
+            ['OOS expectancy remains positive after costs', 'Expect some degradation, but the basic economic edge should remain.'],
+            ['Walk-forward tests are profitable in most windows', 'Repeated train-then-test windows reveal whether the process adapts consistently.'],
+            ['All trials and parameter searches are documented', 'A strong result is less convincing after hundreds of failed experiments.'],
+            ['No changes were made after the final OOS test', 'If changed, define a new untouched period or begin forward testing.']
+          ]},
+          { title: 'Stress tests', items: [
+            ['Nearby parameters produce similar outcomes', 'Look for a broad plateau, not one perfect value surrounded by losses.'],
+            ['Related symbols or exchanges behave logically', 'Transferability should match the proposed economic mechanism.'],
+            ['Nearby timeframes do not collapse', 'Small bar-boundary changes should not entirely destroy a genuine signal.'],
+            ['Regime results match the strategy thesis', 'A trend strategy can fail in ranges, but its failure should be explainable.'],
+            ['Monte Carlo estimates survivable drawdowns', 'Bootstrap trades or blocks and size from adverse percentiles, not the historical maximum.'],
+            ['Delayed, missed and worsened fills are tested', 'Operational imperfections should weaken, not instantly reverse, the edge.']
+          ]}
+        ],
+        flags: [
+          'Final out-of-sample expectancy is negative',
+          'Only one exact parameter combination works',
+          'Profitability exists in only one market regime',
+          'Minor timing or cost changes destroy the edge',
+          'OOS was repeatedly reused during development'
+        ]
+      },
+      {
+        id: 'deployment', title: 'Live readiness', short: 'Live', subtitle: 'Verify the complete signal-to-fill system before scaling.',
+        intro: 'The production strategy includes alerts, network latency, broker state, risk controls and human procedures—not only Pine code.',
+        sections: [
+          { title: 'Forward test', items: [
+            ['Shadow and paper trading match the backtest', 'Compare signal times, intended fills, actual paper fills and missed trades.'],
+            ['Every alert and order has a unique ID', 'Idempotent identifiers prevent webhook retries from duplicating positions.'],
+            ['Broker positions are reconciled regularly', 'TradingView state and broker state can diverge after partial fills or outages.'],
+            ['Actual slippage and latency are logged', 'Use the distribution to update the backtest cost model.'],
+            ['Stale and duplicate alerts are rejected', 'Orders should expire and execution should confirm current position state.']
+          ]},
+          { title: 'Risk controls', items: [
+            ['Maximum trade, day and portfolio loss are capped', 'Risk limits should exist outside the strategy when possible.'],
+            ['Maximum leverage and exposure are capped', 'Include correlated positions and simultaneous signals.'],
+            ['Kill switch and outage procedure are tested', 'Know exactly who or what stops orders and closes risk.'],
+            ['Minimum-size live phase is defined', 'Start with capital small enough that implementation errors are survivable.'],
+            ['Scaling and retirement rules are precommitted', 'Define the evidence needed to add risk—and the conditions that remove it.'],
+            ['Monitoring covers data, alerts and broker connectivity', 'Silent operational failure can turn a good model into an unmanaged position.']
+          ]}
+        ],
+        flags: [
+          'Paper signals or fills materially disagree with the model',
+          'No independent maximum-loss or kill-switch control exists',
+          'Alerts can duplicate or reverse positions accidentally',
+          'Broker and TradingView positions are not reconciled',
+          'Live deployment begins at full intended size'
+        ]
+      }
+    ];
+
+    const storageKey = 'quant-audit-workflow-v1';
+    let state = { checks: {}, flags: {}, decisions: {}, fields: {} };
+    try { state = { ...state, ...JSON.parse(localStorage.getItem(storageKey) || '{}') }; } catch (_) {}
+
+    const esc = value => String(value).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+
+    function render() {
+      document.getElementById('gateStrip').innerHTML = gates.map((g, i) => `
+        <button class="gate-jump" data-target="${g.id}" data-step="${i + 1}" data-state="${state.decisions[g.id] || ''}" aria-label="Open Gate ${i + 1}: ${esc(g.title)}">
+          <small>Gate ${i + 1}</small><strong>${esc(g.short)}</strong><span>${esc(g.subtitle)}</span><em class="node-state" aria-hidden="true"></em>
+        </button>`).join('');
+
+      document.getElementById('gates').innerHTML = gates.map((g, gateIndex) => {
+        const itemCount = g.sections.reduce((n, s) => n + s.items.length, 0);
+        const doneCount = Object.keys(state.checks).filter(k => k.startsWith(g.id + '-') && state.checks[k]).length;
+        return `<details class="panel gate" id="${g.id}" ${gateIndex === 0 ? 'open' : ''}>
+          <summary>
+            <span class="gate-number">${gateIndex + 1}</span>
+            <span class="gate-title"><h2>${esc(g.title)}</h2><p>${esc(g.subtitle)}</p></span>
+            <span class="summary-side"><span class="mini-count" data-count="${g.id}">${doneCount}/${itemCount}</span><span class="chevron" aria-hidden="true">⌄</span></span>
+          </summary>
+          <div class="gate-body">
+            <div class="gate-intro">
+              <p>${esc(g.intro)}</p>
+              <div class="decision" role="group" aria-label="Gate ${gateIndex + 1} decision">
+                ${['pass','review','fail'].map(v => `<button type="button" data-decision="${g.id}" data-value="${v}" aria-pressed="${state.decisions[g.id] === v}">${v[0].toUpperCase() + v.slice(1)}</button>`).join('')}
+              </div>
+            </div>
+            ${g.sections.map((section, sectionIndex) => `<section class="subsection"><h3>${esc(section.title)}</h3><div class="checklist">
+              ${section.items.map((item, itemIndex) => {
+                const key = `${g.id}-${sectionIndex}-${itemIndex}`;
+                return `<label class="check"><input type="checkbox" data-check="${key}" ${state.checks[key] ? 'checked' : ''}><span class="check-text">${esc(item[0])}</span><span class="info" tabindex="0" role="button" aria-label="More information">i<span class="tooltip" role="tooltip">${esc(item[1])}</span></span></label>`;
+              }).join('')}
+            </div></section>`).join('')}
+            <section class="red-flags"><h3>Hard-fail scan</h3><p>Tick only when the problem is present. Any observed red flag forces this gate to Fail.</p><div class="flag-grid">
+              ${g.flags.map((flag, i) => { const key = `${g.id}-flag-${i}`; return `<label class="flag"><input type="checkbox" data-flag="${key}" data-gate="${g.id}" ${state.flags[key] ? 'checked' : ''}><span>${esc(flag)}</span></label>`; }).join('')}
+            </div></section>
+          </div>
+        </details>`;
+      }).join('');
+
+      document.querySelectorAll('[data-save]').forEach(el => { el.value = state.fields[el.dataset.save] || ''; });
+      bindEvents();
+      updateUI();
+    }
+
+    function bindEvents() {
+      document.querySelectorAll('.gate-jump').forEach(btn => btn.addEventListener('click', () => {
+        const target = document.getElementById(btn.dataset.target);
+        target.open = true;
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }));
+      document.querySelectorAll('[data-check]').forEach(el => el.addEventListener('change', () => {
+        state.checks[el.dataset.check] = el.checked; persist(); updateUI();
+      }));
+      document.querySelectorAll('[data-flag]').forEach(el => el.addEventListener('change', () => {
+        state.flags[el.dataset.flag] = el.checked;
+        if (el.checked) state.decisions[el.dataset.gate] = 'fail';
+        persist(); updateUI();
+      }));
+      document.querySelectorAll('[data-decision]').forEach(btn => btn.addEventListener('click', () => {
+        const gate = btn.dataset.decision;
+        const value = btn.dataset.value;
+        const hasFlag = Object.entries(state.flags).some(([k, v]) => k.startsWith(gate + '-flag-') && v);
+        state.decisions[gate] = hasFlag ? 'fail' : value;
+        persist(); updateUI();
+      }));
+      document.querySelectorAll('[data-save]').forEach(el => el.addEventListener('input', () => {
+        state.fields[el.dataset.save] = el.value; persist();
+      }));
+      document.querySelectorAll('.info').forEach(el => {
+        el.addEventListener('click', event => { event.preventDefault(); event.stopPropagation(); el.dataset.open = el.dataset.open === 'true' ? 'false' : 'true'; });
+        el.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); el.click(); } });
+      });
+    }
+
+    function persist() { localStorage.setItem(storageKey, JSON.stringify(state)); }
+
+    function updateUI() {
+      const allKeys = gates.flatMap(g => g.sections.flatMap((s, si) => s.items.map((_, ii) => `${g.id}-${si}-${ii}`)));
+      const completed = allKeys.filter(k => state.checks[k]).length;
+      const pct = Math.round(completed / allKeys.length * 100);
+      document.getElementById('progressText').textContent = `${pct}%`;
+      document.getElementById('progressFill').style.width = `${pct}%`;
+
+      gates.forEach(g => {
+        const total = g.sections.reduce((n, s) => n + s.items.length, 0);
+        const done = Object.keys(state.checks).filter(k => k.startsWith(g.id + '-') && state.checks[k]).length;
+        const count = document.querySelector(`[data-count="${g.id}"]`);
+        if (count) count.textContent = `${done}/${total}`;
+        const jump = document.querySelector(`[data-target="${g.id}"]`);
+        if (jump) jump.dataset.state = state.decisions[g.id] || '';
+        document.querySelectorAll(`[data-decision="${g.id}"]`).forEach(btn => btn.setAttribute('aria-pressed', String(state.decisions[g.id] === btn.dataset.value)));
+      });
+
+      const decisions = gates.map(g => state.decisions[g.id]);
+      const hardFail = Object.values(state.flags).some(Boolean);
+      let title = 'Audit incomplete';
+      let reason = 'Start with Gate 1. Set each gate to Pass, Review or Fail after checking the evidence.';
+      if (hardFail || decisions.includes('fail')) {
+        title = 'Reject';
+        reason = 'At least one hard failure is present. Fix it and restart the affected test before considering capital.';
+      } else if (decisions.every(v => v === 'pass')) {
+        title = 'Small-live candidate';
+        reason = 'All five gates pass. Begin only at minimum size with monitoring, reconciliation and precommitted risk limits.';
+      } else if (decisions.filter(v => v === 'pass').length >= 2 && decisions.some(v => v === 'review')) {
+        title = 'Continue research';
+        reason = 'The foundation is promising, but unresolved gates still need evidence. Do not treat checklist completion as proof.';
+      }
+      document.getElementById('verdict').textContent = title;
+      document.getElementById('verdictReason').textContent = reason;
+    }
+
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      if (!confirm('Reset every field, decision and checklist item?')) return;
+      state = { checks: {}, flags: {}, decisions: {}, fields: {} };
+      persist(); render();
+    });
+
+    document.getElementById('exportBtn').addEventListener('click', () => {
+      const output = {
+        exportedAt: new Date().toISOString(),
+        context: state.fields,
+        verdict: document.getElementById('verdict').textContent,
+        gateDecisions: state.decisions,
+        completedChecks: Object.entries(state.checks).filter(([,v]) => v).map(([k]) => k),
+        observedRedFlags: Object.entries(state.flags).filter(([,v]) => v).map(([k]) => k)
+      };
+      const blob = new Blob([JSON.stringify(output, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `quant-audit-${(state.fields.name || 'strategy').toLowerCase().replace(/[^a-z0-9]+/g, '-')}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    render();
+  </script>
+</body>
+</html>
