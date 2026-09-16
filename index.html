@@ -863,7 +863,7 @@
       });
 
       const decisions = gates.map(g => state.decisions[g.id]);
-      const hardFail = Object.values(state.flags).some(Boolean);
+      const hardFail = Object.entries(state.flags).some(([key, value]) => value && gates.some(g => key.startsWith(g.id + '-flag-')));
       let title = 'Audit incomplete';
       let reason = 'Start with Gate 1. Set each gate to Pass, Review or Fail after checking the evidence.';
       if (hardFail || decisions.includes('fail')) {
