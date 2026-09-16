@@ -94,7 +94,6 @@ This is an MT5-inspired audit layout, not an exported MetaTrader 5 report.
 - Final workflow verdict
 - Browser-saved progress
 - MT5-style report preview, PDF printing, and standalone HTML download
-- Printable checklist
 - JSON export
 - No dependencies, account, backend, or build step
 
