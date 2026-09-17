@@ -278,6 +278,55 @@
     .issue-message span { display: block; margin-top: 2px; color: #4e5a6c; font-size: 11px; line-height: 1.35; }
     .checker-footnote { margin: 10px 0 0; color: var(--muted); font-size: 10px; }
 
+    .evidence-lab { overflow: hidden; border: 3px solid var(--ink); box-shadow: 9px 9px 0 var(--yellow); }
+    .evidence-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; padding: 20px 22px; border-bottom: 3px solid var(--ink); background: var(--red-vivid); color: #fff; }
+    .evidence-head h2 { margin: 0; font-size: 26px; letter-spacing: -.035em; }
+    .evidence-head p { max-width: 700px; margin: 4px 0 0; color: rgba(255,255,255,.86); font-size: 13px; }
+    .evidence-badge { flex: 0 0 auto; padding: 7px 10px; border: 2px solid #fff; border-radius: 999px; font-size: 10px; font-weight: 950; letter-spacing: .07em; text-transform: uppercase; }
+    .evidence-body { padding: 18px; }
+    .evidence-flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; margin-bottom: 16px; }
+    .evidence-step { position: relative; min-height: 76px; padding: 11px 11px 11px 47px; border: 2px solid var(--ink); border-radius: 12px; background: #fff; }
+    .evidence-step:nth-child(2) { background: var(--yellow-soft); }
+    .evidence-step:nth-child(3) { background: var(--blue-soft); }
+    .evidence-step:nth-child(4) { background: var(--red-vivid-soft); }
+    .evidence-step b { position: absolute; top: 11px; left: 10px; display: grid; place-items: center; width: 27px; height: 27px; border: 2px solid var(--ink); border-radius: 50%; background: var(--ink); color: #fff; font-size: 12px; }
+    .evidence-step strong { display: block; font-size: 12px; }
+    .evidence-step span { display: block; margin-top: 3px; color: var(--muted); font-size: 10px; line-height: 1.35; }
+    .evidence-toolbar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .evidence-actions { display: flex; flex-wrap: wrap; gap: 7px; }
+    .evidence-button { min-height: 38px; padding: 8px 11px; border: 2px solid var(--ink); border-radius: 9px; background: #fff; font-size: 11px; font-weight: 900; cursor: pointer; }
+    .evidence-button.primary { background: var(--blue); color: #fff; }
+    .evidence-button.danger { border-color: #bf4540; color: #912b26; }
+    .evidence-help { color: var(--muted); font-size: 11px; }
+    .evidence-table-wrap { overflow-x: auto; border: 2px solid var(--ink); border-radius: 12px; background: #fff; }
+    .evidence-table { width: 100%; min-width: 1130px; border-collapse: collapse; font-size: 11px; }
+    .evidence-table th { padding: 8px 7px; border-right: 1px solid #acb5c4; border-bottom: 2px solid var(--ink); background: #dce4ef; color: #2b3c55; text-align: left; white-space: nowrap; }
+    .evidence-table td { padding: 6px; border-right: 1px solid #d6dce5; border-bottom: 1px solid #d6dce5; vertical-align: top; }
+    .evidence-table tbody tr:last-child td { border-bottom: 0; }
+    .evidence-table input, .evidence-table select { width: 100%; min-height: 36px; padding: 7px 8px; border: 1px solid #aeb7c6; border-radius: 7px; background: #fff; color: var(--ink); font-size: 11px; }
+    .evidence-table input:invalid { border-color: var(--red-vivid); background: #fff1f0; }
+    .evidence-symbol { min-width: 105px; font-weight: 800; }
+    .evidence-narrow { min-width: 78px; }
+    .evidence-medium { min-width: 105px; }
+    .evidence-file-cell { min-width: 125px; }
+    .evidence-upload { display: block; width: 100%; padding: 7px; border: 1px dashed #7f8da2; border-radius: 7px; background: #f7f9fc; text-align: center; font-size: 10px; font-weight: 850; cursor: pointer; }
+    .evidence-upload.has-file { border-style: solid; border-color: var(--green); background: var(--green-soft); color: var(--green); }
+    .row-remove { width: 32px; height: 36px; border: 1px solid #d2938f; border-radius: 7px; background: #fff0ef; color: #912b26; font-weight: 950; cursor: pointer; }
+    .evidence-summary { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 12px; }
+    .evidence-stat { padding: 11px; border: 2px solid var(--ink); border-radius: 10px; background: #fff; }
+    .evidence-stat small { display: block; color: var(--muted); font-size: 9px; font-weight: 900; letter-spacing: .04em; text-transform: uppercase; }
+    .evidence-stat strong { display: block; margin-top: 2px; font-size: 19px; }
+    .evidence-verdict { margin-top: 10px; padding: 12px 14px; border: 2px solid var(--ink); border-left-width: 9px; border-radius: 10px; background: #fff; font-size: 12px; font-weight: 750; }
+    .evidence-verdict[data-level="pass"] { border-left-color: var(--green); background: var(--green-soft); }
+    .evidence-verdict[data-level="review"] { border-left-color: #e2aa00; background: var(--yellow-soft); }
+    .evidence-verdict[data-level="fail"] { border-left-color: var(--red-vivid); background: var(--red-vivid-soft); }
+    .evidence-findings { margin: 6px 0 0; padding-left: 18px; font-weight: 550; }
+    .evidence-findings li { margin-top: 3px; }
+    .evidence-details { margin-top: 12px; border: 1px solid var(--line); border-radius: 10px; background: #f7f9fc; }
+    .evidence-details summary { padding: 10px 12px; cursor: pointer; font-size: 11px; font-weight: 900; }
+    .evidence-details > div { padding: 0 12px 12px; color: var(--muted); font-size: 11px; }
+    .evidence-details ul { margin: 5px 0 0; padding-left: 18px; }
+
     details.gate { --gate-color: var(--blue); overflow: visible; border-top: 9px solid var(--gate-color); }
     #gates details.gate:nth-child(3n+1) { --gate-color: var(--blue); }
     #gates details.gate:nth-child(3n+2) { --gate-color: var(--yellow); }
@@ -437,6 +486,10 @@
     .mt5-meter { display: grid; grid-template-columns: auto 1fr auto; gap: 8px; align-items: center; padding: 8px; border-bottom: 1px solid #c5ccd7; background: #f7f9fb; }
     .mt5-meter-track { height: 12px; border: 1px solid #8c99aa; background: #fff; }
     .mt5-meter-fill { height: 100%; background: #3868a6; }
+    .mt5-evidence-images { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; padding: 8px; }
+    .mt5-evidence-image { margin: 0; border: 1px solid #aeb7c4; background: #f4f6f9; }
+    .mt5-evidence-image img { display: block; width: 100%; max-height: 360px; object-fit: contain; background: #fff; }
+    .mt5-evidence-image figcaption { padding: 5px 7px; color: #526174; font-size: 10px; }
     .mt5-report-note { margin: 0; padding: 10px 12px; border-top: 1px solid #aeb7c4; background: #eef1f5; color: #5c6878; font-size: 10px; }
 
     .verdict-panel { position: relative; overflow: hidden; padding: 28px; border: 3px solid var(--ink); background: var(--blue); color: #fff; box-shadow: 9px 9px 0 var(--yellow); }
@@ -472,6 +525,8 @@
       .calc-fields { grid-template-columns: repeat(2, 1fr); }
       .syntax-layout { grid-template-columns: 1fr; }
       .code-side { border-right: 0; border-bottom: 2px solid var(--ink); }
+      .evidence-flow { grid-template-columns: repeat(2, 1fr); }
+      .evidence-summary { grid-template-columns: repeat(3, 1fr); }
     }
     @media (max-width: 720px) {
       .shell { width: min(100% - 20px, 1180px); }
@@ -507,6 +562,13 @@
       .editor-shell { height: 300px; }
       .syntax-runbar { align-items: flex-end; }
       .syntax-privacy { max-width: 190px; }
+      .evidence-head { display: block; }
+      .evidence-badge { display: inline-block; margin-top: 10px; }
+      .evidence-body { padding: 12px; }
+      .evidence-flow { grid-template-columns: 1fr; }
+      .evidence-step { min-height: 64px; }
+      .evidence-summary { grid-template-columns: repeat(2, 1fr); }
+      .evidence-toolbar { align-items: flex-start; }
       .report-dialog { width: calc(100% - 10px); max-height: calc(100vh - 10px); }
       .report-toolbar { align-items: flex-start; }
       .report-toolbar > span { display: none; }
@@ -516,6 +578,7 @@
       .mt5-table { table-layout: auto; }
       .mt5-table th, .mt5-table td { min-width: 110px; }
       .mt5-table-wrap { overflow-x: auto; }
+      .mt5-evidence-images { grid-template-columns: 1fr; }
     }
     @media print {
       body { background: #fff; }
@@ -618,6 +681,61 @@
         <label class="field">Base cost / side<input data-save="cost" placeholder="e.g. 0.08%"></label>
         <label class="field">Risk / trade<input data-save="risk" placeholder="e.g. 0.5%"></label>
         <label class="field thesis">One-sentence edge thesis<input data-save="thesis" placeholder="This strategy expects to earn because…"></label>
+      </div>
+    </section>
+
+    <section class="panel evidence-lab" id="evidenceLab" aria-labelledby="evidenceTitle">
+      <div class="evidence-head">
+        <div>
+          <h2 id="evidenceTitle">Evidence Lab</h2>
+          <p>One profitable chart is not proof. Record the same strategy on several markets, confirm it kept exiting, and compare it with a simple benchmark.</p>
+        </div>
+        <span class="evidence-badge">Multi-market proof</span>
+      </div>
+      <div class="evidence-body">
+        <div class="evidence-flow" aria-label="Evidence workflow">
+          <div class="evidence-step"><b>1</b><strong>Run the same setup</strong><span>Keep parameters, costs and dates comparable.</span></div>
+          <div class="evidence-step"><b>2</b><strong>Enter honest results</strong><span>Add losing markets too. Do not cherry-pick.</span></div>
+          <div class="evidence-step"><b>3</b><strong>Check exits</strong><span>Make sure the strategy did not silently become buy-and-hold.</span></div>
+          <div class="evidence-step"><b>4</b><strong>Test unseen data</strong><span>At least one result should be genuinely out-of-sample.</span></div>
+        </div>
+        <div class="evidence-toolbar">
+          <div class="evidence-actions">
+            <button class="evidence-button primary" id="addEvidenceBtn" type="button">+ Add market</button>
+            <input id="evidenceCsvInput" type="file" accept=".csv,text/csv" hidden>
+            <button class="evidence-button" id="importEvidenceBtn" type="button">Import CSV</button>
+            <button class="evidence-button danger" id="clearEvidenceBtn" type="button">Clear results</button>
+          </div>
+          <span class="evidence-help">Required columns are marked *. Percentages are entered as numbers, such as 12.5.</span>
+        </div>
+        <div class="evidence-table-wrap">
+          <table class="evidence-table">
+            <thead><tr>
+              <th>Market *</th><th>Timeframe</th><th>Test period</th><th>Trades *</th><th>Net return % *</th><th>Max DD %</th><th>Profit factor</th><th>Benchmark %</th><th>Avg hold</th><th>Unseen data? *</th><th>Exits continued? *</th><th>Evidence</th><th aria-label="Remove"></th>
+            </tr></thead>
+            <tbody id="evidenceRows"></tbody>
+          </table>
+        </div>
+        <div class="evidence-summary" aria-live="polite">
+          <div class="evidence-stat"><small>Complete markets</small><strong id="evidenceMarketCount">0</strong></div>
+          <div class="evidence-stat"><small>Profitable</small><strong id="evidenceProfitableCount">—</strong></div>
+          <div class="evidence-stat"><small>Median return</small><strong id="evidenceMedianReturn">—</strong></div>
+          <div class="evidence-stat"><small>Beat benchmark</small><strong id="evidenceBeatBenchmark">—</strong></div>
+          <div class="evidence-stat"><small>Unseen tests</small><strong id="evidenceOosCount">0</strong></div>
+        </div>
+        <div class="evidence-verdict" id="evidenceVerdict" data-level="review">Add at least two complete market results. Three or more gives a more useful transferability check.</div>
+        <details class="evidence-details">
+          <summary>CSV format and scoring rules</summary>
+          <div>
+            Headers accepted: <code>symbol,timeframe,period,trades,return,maxdd,pf,benchmark,avghold,oos,exits</code>.
+            <ul>
+              <li>Under 30 trades is flagged as a weak sample; 100+ is preferable when strategy frequency allows.</li>
+              <li>One market is never treated as proof that an edge transfers.</li>
+              <li>If exits stopped before the test ended, the audit is automatically rejected.</li>
+              <li>An out-of-sample result means data that was not inspected while building or tuning the strategy.</li>
+            </ul>
+          </div>
+        </details>
       </div>
     </section>
 
@@ -881,13 +999,15 @@
     ];
 
     const storageKey = 'quant-audit-workflow-v1';
-    let state = { mode: 'normal', checks: {}, flags: {}, decisions: {}, fields: {}, metrics: {}, syntaxReport: null, compilerProxy: '' };
+    let state = { mode: 'normal', checks: {}, flags: {}, decisions: {}, fields: {}, metrics: {}, syntaxReport: null, compilerProxy: '', evidenceRows: [] };
     try { state = { ...state, ...JSON.parse(localStorage.getItem(storageKey) || '{}') }; } catch (_) {}
     if (!['normal', 'quant'].includes(state.mode)) state.mode = 'normal';
     state.metrics ||= {};
     state.syntaxReport ||= null;
     state.compilerProxy ||= '';
+    state.evidenceRows = Array.isArray(state.evidenceRows) ? state.evidenceRows : [];
     let gates = state.mode === 'quant' ? quantGates : normalGates;
+    const evidenceImages = new Map();
 
     const esc = value => String(value).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
 
@@ -1039,6 +1159,121 @@
       checkCodeBtn.textContent = 'Check again';
     }
 
+    function makeEvidenceRow(seed = {}) {
+      return {
+        id: seed.id || (globalThis.crypto?.randomUUID ? globalThis.crypto.randomUUID() : `market-${Date.now()}-${Math.random().toString(16).slice(2)}`),
+        symbol: seed.symbol || '', timeframe: seed.timeframe || '', period: seed.period || '',
+        trades: seed.trades ?? '', netReturn: seed.netReturn ?? '', maxDD: seed.maxDD ?? '',
+        profitFactor: seed.profitFactor ?? '', benchmark: seed.benchmark ?? '', avgHold: seed.avgHold || '',
+        oos: seed.oos || '', exits: seed.exits || '', evidenceName: seed.evidenceName || ''
+      };
+    }
+
+    function evidenceNumber(value) {
+      if (value === '' || value === null || value === undefined) return null;
+      const number = Number(String(value).replace(/[%,$]/g, '').trim());
+      return Number.isFinite(number) ? number : null;
+    }
+
+    function completeEvidenceRows() {
+      return state.evidenceRows.filter(row => row.symbol.trim() && evidenceNumber(row.trades) > 0 && evidenceNumber(row.netReturn) !== null && ['yes','no'].includes(row.oos) && ['yes','no'].includes(row.exits));
+    }
+
+    function summarizeEvidence() {
+      const rows = completeEvidenceRows();
+      const returns = rows.map(row => evidenceNumber(row.netReturn)).sort((a, b) => a - b);
+      const median = returns.length ? (returns.length % 2 ? returns[(returns.length - 1) / 2] : (returns[returns.length / 2 - 1] + returns[returns.length / 2]) / 2) : null;
+      const benchmarkRows = rows.filter(row => evidenceNumber(row.benchmark) !== null);
+      const beatBenchmark = benchmarkRows.filter(row => evidenceNumber(row.netReturn) > evidenceNumber(row.benchmark)).length;
+      const profitable = rows.filter(row => evidenceNumber(row.netReturn) > 0).length;
+      const oos = rows.filter(row => row.oos === 'yes').length;
+      const exitFailures = rows.filter(row => row.exits === 'no');
+      const weakSamples = rows.filter(row => evidenceNumber(row.trades) < 30);
+      const findings = [];
+      let level = 'review';
+      let title = 'More evidence needed';
+      if (!rows.length) findings.push('Add at least two complete market results. Three or more gives a more useful transferability check.');
+      else if (rows.length === 1) findings.push('Only one complete market was tested. This cannot show whether the edge transfers.');
+      if (exitFailures.length) findings.push(`Exit activity stopped on ${exitFailures.map(row => row.symbol).join(', ')}. The result may have silently become buy-and-hold.`);
+      if (weakSamples.length) findings.push(`${weakSamples.map(row => row.symbol).join(', ')} ${weakSamples.length === 1 ? 'has' : 'have'} fewer than 30 trades.`);
+      if (rows.length && !oos) findings.push('No complete result is marked as genuinely unseen data.');
+      if (rows.length >= 2 && profitable / rows.length < .5) findings.push('Fewer than half of the tested markets are profitable.');
+      if (median !== null && median <= 0) findings.push('Median return across complete markets is not positive.');
+      if (!benchmarkRows.length && rows.length) findings.push('No benchmark returns were entered, so market beta cannot be separated from strategy edge.');
+      if (exitFailures.length) {
+        level = 'fail';
+        title = 'Reject: execution evidence is invalid';
+      } else if (rows.length >= 3 && oos > 0 && median > 0 && profitable / rows.length >= .5 && !weakSamples.length) {
+        level = 'pass';
+        title = 'Evidence check passed';
+        if (!findings.length) findings.push('The strategy has a positive median across several markets, includes unseen data, and shows continuing exits.');
+      } else if (rows.length) {
+        title = 'Evidence needs review';
+      }
+      return { rows, median, benchmarkRows, beatBenchmark, profitable, oos, exitFailures, weakSamples, findings, level, title };
+    }
+
+    function renderEvidence() {
+      if (!state.evidenceRows.length) state.evidenceRows.push(makeEvidenceRow({ symbol: state.fields.symbol || '', timeframe: state.fields.timeframe || '', period: state.fields.dates || '' }));
+      const body = document.getElementById('evidenceRows');
+      body.innerHTML = state.evidenceRows.map(row => `<tr data-evidence-row="${esc(row.id)}">
+        <td><input class="evidence-symbol" data-evidence-field="symbol" value="${esc(row.symbol)}" placeholder="e.g. BTCUSDT" aria-label="Market symbol" required></td>
+        <td><input class="evidence-narrow" data-evidence-field="timeframe" value="${esc(row.timeframe)}" placeholder="4H" aria-label="Timeframe"></td>
+        <td><input class="evidence-medium" data-evidence-field="period" value="${esc(row.period)}" placeholder="2019–2026" aria-label="Test period"></td>
+        <td><input class="evidence-narrow" data-evidence-field="trades" value="${esc(row.trades)}" type="number" min="1" step="1" inputmode="numeric" placeholder="100" aria-label="Number of trades" required></td>
+        <td><input class="evidence-narrow" data-evidence-field="netReturn" value="${esc(row.netReturn)}" type="number" step="0.01" inputmode="decimal" placeholder="12.5" aria-label="Net return percent" required></td>
+        <td><input class="evidence-narrow" data-evidence-field="maxDD" value="${esc(row.maxDD)}" type="number" min="0" step="0.01" inputmode="decimal" placeholder="8.2" aria-label="Maximum drawdown percent"></td>
+        <td><input class="evidence-narrow" data-evidence-field="profitFactor" value="${esc(row.profitFactor)}" type="number" min="0" step="0.001" inputmode="decimal" placeholder="1.4" aria-label="Profit factor"></td>
+        <td><input class="evidence-narrow" data-evidence-field="benchmark" value="${esc(row.benchmark)}" type="number" step="0.01" inputmode="decimal" placeholder="10.0" aria-label="Benchmark return percent"></td>
+        <td><input class="evidence-medium" data-evidence-field="avgHold" value="${esc(row.avgHold)}" placeholder="e.g. 18 bars" aria-label="Average holding period"></td>
+        <td><select class="evidence-medium" data-evidence-field="oos" aria-label="Unseen data result" required><option value="">Choose</option><option value="yes" ${row.oos === 'yes' ? 'selected' : ''}>Yes</option><option value="no" ${row.oos === 'no' ? 'selected' : ''}>No</option></select></td>
+        <td><select class="evidence-medium" data-evidence-field="exits" aria-label="Exit activity continued" required><option value="">Choose</option><option value="yes" ${row.exits === 'yes' ? 'selected' : ''}>Yes</option><option value="no" ${row.exits === 'no' ? 'selected' : ''}>No — stopped</option></select></td>
+        <td class="evidence-file-cell"><label class="evidence-upload ${evidenceImages.has(row.id) ? 'has-file' : ''}">${evidenceImages.has(row.id) ? `✓ ${esc(row.evidenceName.slice(0, 18))}` : row.evidenceName ? `Reattach ${esc(row.evidenceName.slice(0, 13))}` : 'Add screenshot'}<input type="file" data-evidence-file accept="image/png,image/jpeg,image/webp" hidden></label></td>
+        <td><button class="row-remove" type="button" data-remove-evidence aria-label="Remove ${esc(row.symbol || 'market')} result">×</button></td>
+      </tr>`).join('');
+      updateEvidenceSummary();
+    }
+
+    function updateEvidenceSummary() {
+      const summary = summarizeEvidence();
+      document.getElementById('evidenceMarketCount').textContent = summary.rows.length;
+      document.getElementById('evidenceProfitableCount').textContent = summary.rows.length ? `${summary.profitable}/${summary.rows.length}` : '—';
+      document.getElementById('evidenceMedianReturn').textContent = summary.median === null ? '—' : `${summary.median >= 0 ? '+' : ''}${summary.median.toFixed(2)}%`;
+      document.getElementById('evidenceBeatBenchmark').textContent = summary.benchmarkRows.length ? `${summary.beatBenchmark}/${summary.benchmarkRows.length}` : '—';
+      document.getElementById('evidenceOosCount').textContent = summary.oos;
+      const verdict = document.getElementById('evidenceVerdict');
+      verdict.dataset.level = summary.level;
+      verdict.innerHTML = `<strong>${esc(summary.title)}</strong>${summary.findings.length ? `<ul class="evidence-findings">${summary.findings.map(item => `<li>${esc(item)}</li>`).join('')}</ul>` : ''}`;
+      updateUI();
+    }
+
+    function parseCsv(text) {
+      const lines = text.replace(/^\uFEFF/, '').split(/\r?\n/).filter(line => line.trim());
+      const readLine = line => {
+        const values = []; let value = ''; let quoted = false;
+        for (let i = 0; i < line.length; i++) {
+          const char = line[i];
+          if (char === '"' && quoted && line[i + 1] === '"') { value += '"'; i++; }
+          else if (char === '"') quoted = !quoted;
+          else if (char === ',' && !quoted) { values.push(value.trim()); value = ''; }
+          else value += char;
+        }
+        values.push(value.trim());
+        return values;
+      };
+      if (lines.length < 2) return [];
+      const headers = readLine(lines[0]).map(header => header.toLowerCase().replace(/[^a-z0-9]/g, ''));
+      const aliases = { symbol:['symbol','market','ticker','security'], timeframe:['timeframe','tf'], period:['period','testperiod','dates','daterange'], trades:['trades','numberoftrades','totaltrades'], netReturn:['return','netreturn','returnpct','result'], maxDD:['maxdd','maxdrawdown','drawdown'], profitFactor:['pf','profitfactor'], benchmark:['benchmark','benchmarkreturn','buyandhold'], avgHold:['avghold','averagehold','holdingperiod'], oos:['oos','unseendata','outofsample'], exits:['exits','exitscontinued','exitactivity'] };
+      const indexFor = key => headers.findIndex(header => aliases[key].includes(header));
+      return lines.slice(1).map(line => {
+        const cells = readLine(line); const seed = {};
+        Object.keys(aliases).forEach(key => { const index = indexFor(key); if (index >= 0) seed[key] = cells[index] || ''; });
+        const yesNo = value => /^(yes|y|true|1|oos|continued|active)$/i.test(value || '') ? 'yes' : /^(no|n|false|0|stopped|failed|insample)$/i.test(value || '') ? 'no' : '';
+        seed.oos = yesNo(seed.oos); seed.exits = yesNo(seed.exits);
+        return makeEvidenceRow(seed);
+      }).filter(row => row.symbol || row.trades || row.netReturn);
+    }
+
     function render() {
       gates = state.mode === 'quant' ? quantGates : normalGates;
       const isQuant = state.mode === 'quant';
@@ -1101,6 +1336,7 @@
 
       document.querySelectorAll('[data-save]').forEach(el => { el.value = state.fields[el.dataset.save] || ''; });
       document.querySelectorAll('[data-metric]').forEach(el => { el.value = state.metrics[el.dataset.metric] ?? ''; });
+      renderEvidence();
       bindEvents();
       updateCalculator();
       updateUI();
@@ -1195,6 +1431,7 @@
       const counts = ['pass', 'review', 'fail', 'pending'].reduce((out, key) => ({ ...out, [key]: decisions.filter(v => v === key).length }), {});
       const stats = getEdgeStats();
       const syntaxSummary = state.syntaxReport ? summarizeSyntax(state.syntaxReport.local, state.syntaxReport.official) : null;
+      const evidence = summarizeEvidence();
       const value = (key, fallback = '—') => state.fields[key] ? esc(state.fields[key]) : fallback;
       const metric = (number, digits = 2, suffix = '') => Number.isFinite(number) ? `${number >= 0 ? '' : '−'}${Math.abs(number).toFixed(digits)}${suffix}` : '—';
       const status = raw => `<span class="mt5-status ${esc(raw)}">${esc(raw)}</span>`;
@@ -1213,6 +1450,18 @@
       const syntaxRows = syntaxSummary?.allIssues?.length
         ? syntaxSummary.allIssues.map(item => `<tr><td>${esc(item.source === 'tradingview' ? 'TradingView' : 'Preflight')}</td><td class="number">${item.line || '—'}</td><td>${esc(item.message)}</td><td>${status(item.severity)}</td></tr>`).join('')
         : `<tr><td colspan="3">${state.syntaxReport ? 'No syntax findings were reported.' : 'Syntax checker has not been run.'}</td><td>${status(state.syntaxReport ? 'pass' : 'pending')}</td></tr>`;
+      const evidenceRows = state.evidenceRows.some(row => row.symbol || row.trades || row.netReturn)
+        ? state.evidenceRows.filter(row => row.symbol || row.trades || row.netReturn).map(row => {
+          const complete = row.symbol.trim() && evidenceNumber(row.trades) > 0 && evidenceNumber(row.netReturn) !== null && ['yes','no'].includes(row.oos) && ['yes','no'].includes(row.exits);
+          const rowStatus = row.exits === 'no' ? 'fail' : complete ? 'pass' : 'pending';
+          const fmt = (raw, suffix = '') => evidenceNumber(raw) === null ? '—' : `${evidenceNumber(raw).toFixed(suffix ? 2 : 0)}${suffix}`;
+          return `<tr><td>${esc(row.symbol || '—')}</td><td>${esc(row.timeframe || '—')}</td><td class="number">${fmt(row.trades)}</td><td class="number">${fmt(row.netReturn, '%')}</td><td class="number">${fmt(row.maxDD, '%')}</td><td class="number">${evidenceNumber(row.profitFactor) === null ? '—' : evidenceNumber(row.profitFactor).toFixed(3)}</td><td class="number">${fmt(row.benchmark, '%')}</td><td>${row.oos === 'yes' ? 'Yes' : row.oos === 'no' ? 'No' : '—'}</td><td>${row.exits === 'yes' ? 'Yes' : row.exits === 'no' ? 'Stopped' : '—'}</td><td>${evidenceImages.has(row.id) ? esc(row.evidenceName) : row.evidenceName ? 'Reattach file' : '—'}</td><td>${status(rowStatus)}</td></tr>`;
+        }).join('')
+        : `<tr><td colspan="10">No multi-market evidence entered.</td><td>${status('pending')}</td></tr>`;
+      const evidenceFindingRows = evidence.findings.length
+        ? evidence.findings.map(finding => `<tr><td>${esc(finding)}</td><td>${status(evidence.level)}</td></tr>`).join('')
+        : `<tr><td>No material evidence warning was generated.</td><td>${status(evidence.level)}</td></tr>`;
+      const evidenceImageHtml = state.evidenceRows.filter(row => evidenceImages.has(row.id)).map(row => `<figure class="mt5-evidence-image"><img src="${evidenceImages.get(row.id)}" alt="Backtest evidence for ${esc(row.symbol || 'market')}"><figcaption>${esc(row.symbol || 'Market')} · ${esc(row.timeframe || 'timeframe not supplied')} · ${esc(row.evidenceName)}</figcaption></figure>`).join('');
 
       return `<article class="mt5-report">
         <header class="mt5-report-header">
@@ -1226,6 +1475,15 @@
           <tr><td class="label">Lines checked</td><td class="value number">${state.syntaxReport?.local?.lines || '—'}</td><td class="label">Errors / warnings</td><td class="value number">${syntaxSummary ? `${syntaxSummary.errors} / ${syntaxSummary.warnings}` : '—'}</td></tr>
         </tbody></table></div>
         <div class="mt5-table-wrap"><table class="mt5-table"><thead><tr><th style="width:16%">Source</th><th style="width:10%">Line</th><th>Finding</th><th style="width:12%">Severity</th></tr></thead><tbody>${syntaxRows}</tbody></table></div>
+        <div class="mt5-section-title">Multi-market evidence</div>
+        <div class="mt5-table-wrap"><table class="mt5-table"><tbody>
+          <tr><td class="label">Evidence verdict</td><td class="value">${esc(evidence.title)}</td><td class="label">Complete markets</td><td class="value number">${evidence.rows.length}</td></tr>
+          <tr><td class="label">Profitable markets</td><td class="value number">${evidence.rows.length ? `${evidence.profitable} / ${evidence.rows.length}` : '—'}</td><td class="label">Median return</td><td class="value number">${evidence.median === null ? '—' : `${evidence.median >= 0 ? '+' : ''}${evidence.median.toFixed(2)}%`}</td></tr>
+          <tr><td class="label">Beat benchmark</td><td class="value number">${evidence.benchmarkRows.length ? `${evidence.beatBenchmark} / ${evidence.benchmarkRows.length}` : '—'}</td><td class="label">Unseen tests</td><td class="value number">${evidence.oos}</td></tr>
+        </tbody></table></div>
+        <div class="mt5-table-wrap"><table class="mt5-table"><thead><tr><th>Market</th><th>TF</th><th>Trades</th><th>Return</th><th>Max DD</th><th>PF</th><th>Benchmark</th><th>OOS</th><th>Exits</th><th>Evidence</th><th>Status</th></tr></thead><tbody>${evidenceRows}</tbody></table></div>
+        <div class="mt5-table-wrap"><table class="mt5-table"><thead><tr><th>Evidence finding</th><th style="width:12%">Status</th></tr></thead><tbody>${evidenceFindingRows}</tbody></table></div>
+        ${evidenceImageHtml ? `<div class="mt5-section-title">Evidence screenshots</div><div class="mt5-evidence-images">${evidenceImageHtml}</div>` : ''}
         <div class="mt5-section-title">Test configuration</div>
         <div class="mt5-table-wrap"><table class="mt5-table"><tbody>
           <tr><td class="label">Strategy</td><td class="value">${value('name')}</td><td class="label">Symbol</td><td class="value">${value('symbol')}</td></tr>
@@ -1282,17 +1540,24 @@
       const decisions = gates.map(g => state.decisions[g.id]);
       const hardFail = Object.entries(state.flags).some(([key, value]) => value && gates.some(g => key.startsWith(g.id + '-flag-')));
       const syntaxFailed = Boolean(state.syntaxReport && ((state.syntaxReport.local?.errors || 0) > 0 || (state.syntaxReport.official?.available && !state.syntaxReport.official?.compiled)));
+      const evidence = summarizeEvidence();
       let title = 'Audit incomplete';
       let reason = 'Start with Gate 1. Set each gate to Pass, Review or Fail after checking the evidence.';
       if (syntaxFailed) {
         title = 'Reject';
         reason = 'The Pine syntax check contains errors. Fix the code and rerun the checker before evaluating the strategy.';
+      } else if (evidence.exitFailures.length) {
+        title = 'Reject';
+        reason = 'At least one backtest stopped exiting before the test ended. Treat that result as invalid until the execution bug is fixed.';
       } else if (hardFail || decisions.includes('fail')) {
         title = 'Reject';
         reason = 'At least one hard failure is present. Fix it and restart the affected test before considering capital.';
-      } else if (decisions.every(v => v === 'pass')) {
+      } else if (decisions.every(v => v === 'pass') && evidence.level === 'pass') {
         title = 'Small-live candidate';
-        reason = 'All five gates pass. Begin only at minimum size with monitoring, reconciliation and precommitted risk limits.';
+        reason = 'All five gates and the multi-market evidence check pass. Begin only at minimum size with monitoring, reconciliation and precommitted risk limits.';
+      } else if (decisions.every(v => v === 'pass') && evidence.level !== 'pass') {
+        title = 'Continue research';
+        reason = 'The checklist passes, but the multi-market evidence is incomplete or fragile. Add broader and genuinely unseen tests before risking capital.';
       } else if (decisions.filter(v => v === 'pass').length >= 2 && decisions.some(v => v === 'review')) {
         title = 'Continue research';
         reason = 'The foundation is promising, but unresolved gates still need evidence. Do not treat checklist completion as proof.';
@@ -1367,6 +1632,77 @@
       pineEditor.focus();
     });
 
+    document.getElementById('addEvidenceBtn').addEventListener('click', () => {
+      state.evidenceRows.push(makeEvidenceRow({ timeframe: state.fields.timeframe || '', period: state.fields.dates || '' }));
+      persist();
+      renderEvidence();
+      document.querySelector('#evidenceRows tr:last-child input')?.focus();
+    });
+    document.getElementById('importEvidenceBtn').addEventListener('click', () => document.getElementById('evidenceCsvInput').click());
+    document.getElementById('evidenceCsvInput').addEventListener('change', async event => {
+      const file = event.target.files?.[0];
+      if (!file) return;
+      if (file.size > 1000000) { alert('Choose a CSV file smaller than 1 MB.'); event.target.value = ''; return; }
+      const imported = parseCsv(await file.text());
+      if (!imported.length) { alert('No usable rows found. Check the CSV headers shown under scoring rules.'); event.target.value = ''; return; }
+      const hasEnteredData = state.evidenceRows.some(row => row.symbol || row.trades || row.netReturn);
+      if (hasEnteredData && !confirm(`Replace the current results with ${imported.length} imported row${imported.length === 1 ? '' : 's'}?`)) { event.target.value = ''; return; }
+      evidenceImages.clear();
+      state.evidenceRows = imported;
+      persist();
+      renderEvidence();
+      event.target.value = '';
+    });
+    document.getElementById('clearEvidenceBtn').addEventListener('click', () => {
+      if (!confirm('Clear every market result and attached screenshot?')) return;
+      evidenceImages.clear();
+      state.evidenceRows = [makeEvidenceRow({ symbol: state.fields.symbol || '', timeframe: state.fields.timeframe || '', period: state.fields.dates || '' })];
+      persist();
+      renderEvidence();
+    });
+    document.getElementById('evidenceRows').addEventListener('input', event => {
+      const field = event.target.closest('[data-evidence-field]');
+      if (!field) return;
+      const id = field.closest('[data-evidence-row]')?.dataset.evidenceRow;
+      const row = state.evidenceRows.find(item => item.id === id);
+      if (!row) return;
+      row[field.dataset.evidenceField] = field.value;
+      persist();
+      updateEvidenceSummary();
+    });
+    document.getElementById('evidenceRows').addEventListener('change', async event => {
+      const field = event.target.closest('[data-evidence-field]');
+      if (field) {
+        const id = field.closest('[data-evidence-row]')?.dataset.evidenceRow;
+        const row = state.evidenceRows.find(item => item.id === id);
+        if (row) { row[field.dataset.evidenceField] = field.value; persist(); updateEvidenceSummary(); }
+        return;
+      }
+      const fileInput = event.target.closest('[data-evidence-file]');
+      if (!fileInput) return;
+      const id = fileInput.closest('[data-evidence-row]')?.dataset.evidenceRow;
+      const row = state.evidenceRows.find(item => item.id === id);
+      const file = fileInput.files?.[0];
+      if (!row || !file) return;
+      if (file.size > 3000000) { alert('Choose an evidence image smaller than 3 MB.'); fileInput.value = ''; return; }
+      if (!/^image\/(png|jpeg|webp)$/.test(file.type)) { alert('Use a PNG, JPEG or WebP screenshot.'); fileInput.value = ''; return; }
+      const dataUrl = await new Promise((resolve, reject) => { const reader = new FileReader(); reader.onload = () => resolve(reader.result); reader.onerror = reject; reader.readAsDataURL(file); });
+      evidenceImages.set(id, dataUrl);
+      row.evidenceName = file.name;
+      persist();
+      renderEvidence();
+    });
+    document.getElementById('evidenceRows').addEventListener('click', event => {
+      const button = event.target.closest('[data-remove-evidence]');
+      if (!button) return;
+      const id = button.closest('[data-evidence-row]')?.dataset.evidenceRow;
+      evidenceImages.delete(id);
+      state.evidenceRows = state.evidenceRows.filter(row => row.id !== id);
+      if (!state.evidenceRows.length) state.evidenceRows.push(makeEvidenceRow());
+      persist();
+      renderEvidence();
+    });
+
     document.getElementById('modeToggle').addEventListener('click', () => {
       state.mode = state.mode === 'quant' ? 'normal' : 'quant';
       persist();
@@ -1376,7 +1712,8 @@
 
     document.getElementById('resetBtn').addEventListener('click', () => {
       if (!confirm('Reset every field, decision and checklist item?')) return;
-      state = { mode: state.mode, checks: {}, flags: {}, decisions: {}, fields: {}, metrics: {}, syntaxReport: null, compilerProxy: state.compilerProxy };
+      evidenceImages.clear();
+      state = { mode: state.mode, checks: {}, flags: {}, decisions: {}, fields: {}, metrics: {}, syntaxReport: null, compilerProxy: state.compilerProxy, evidenceRows: [] };
       pineEditor.value = '';
       updateEditorChrome();
       renderSyntaxReport();
@@ -1390,6 +1727,10 @@
         context: state.fields,
         edgeCalculator: state.metrics,
         syntaxCheck: state.syntaxReport,
+        evidenceLab: {
+          summary: summarizeEvidence(),
+          markets: state.evidenceRows.map(({ id, ...row }) => row)
+        },
         verdict: document.getElementById('verdict').textContent,
         gateDecisions: state.decisions,
         completedChecks: Object.entries(state.checks).filter(([,v]) => v).map(([k]) => k),
