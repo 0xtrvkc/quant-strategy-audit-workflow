@@ -704,6 +704,7 @@
             <button class="evidence-button primary" id="addEvidenceBtn" type="button">+ Add market</button>
             <input id="evidenceCsvInput" type="file" accept=".csv,text/csv" hidden>
             <button class="evidence-button" id="importEvidenceBtn" type="button">Import CSV</button>
+            <button class="evidence-button" id="downloadEvidenceTemplateBtn" type="button">Download CSV example</button>
             <button class="evidence-button danger" id="clearEvidenceBtn" type="button">Clear results</button>
           </div>
           <span class="evidence-help">Required columns are marked *. Percentages are entered as numbers, such as 12.5.</span>
@@ -1639,6 +1640,21 @@
       document.querySelector('#evidenceRows tr:last-child input')?.focus();
     });
     document.getElementById('importEvidenceBtn').addEventListener('click', () => document.getElementById('evidenceCsvInput').click());
+    document.getElementById('downloadEvidenceTemplateBtn').addEventListener('click', () => {
+      const csv = [
+        'symbol,timeframe,period,trades,return,maxdd,pf,benchmark,avghold,oos,exits',
+        'SPY,1D,2018-2025,126,14.50,8.20,1.42,12.10,18 bars,no,yes',
+        'QQQ,1D,2018-2025,104,9.80,10.40,1.26,18.60,21 bars,yes,yes',
+        'BTCUSDT,4H,2021-2025,238,-2.30,19.70,0.94,24.50,32 bars,no,yes'
+      ].join('\r\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'evidence-lab-example.csv';
+      link.click();
+      URL.revokeObjectURL(url);
+    });
     document.getElementById('evidenceCsvInput').addEventListener('change', async event => {
       const file = event.target.files?.[0];
       if (!file) return;
