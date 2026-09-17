@@ -226,6 +226,58 @@
     }
     .thesis { grid-column: span 4; }
 
+    .syntax-panel { overflow: hidden; border: 3px solid var(--ink); box-shadow: 9px 9px 0 var(--red-vivid); }
+    .syntax-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; padding: 20px 22px; border-bottom: 2px solid var(--ink); background: var(--blue); color: #fff; }
+    .syntax-head h2 { margin: 0; font-size: 25px; letter-spacing: -.03em; }
+    .syntax-head p { max-width: 680px; margin: 4px 0 0; color: rgba(255,255,255,.82); font-size: 13px; }
+    .syntax-mode-badge { flex: 0 0 auto; padding: 7px 10px; border: 2px solid #fff; border-radius: 999px; color: #fff; font-size: 10px; font-weight: 900; letter-spacing: .07em; text-transform: uppercase; }
+    .syntax-layout { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(320px, .65fr); min-height: 470px; }
+    .code-side { min-width: 0; padding: 16px; border-right: 2px solid var(--ink); background: #111827; color: #e7edf8; }
+    .code-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+    .code-toolbar strong { font-size: 12px; letter-spacing: .07em; text-transform: uppercase; }
+    .code-toolbar-actions { display: flex; flex-wrap: wrap; gap: 7px; justify-content: flex-end; }
+    .code-action { min-height: 34px; padding: 7px 10px; border: 1px solid #65728a; border-radius: 8px; background: #263248; color: #fff; font-size: 11px; font-weight: 800; cursor: pointer; }
+    .code-action:hover { background: #34435e; }
+    .editor-shell { display: grid; grid-template-columns: 44px minmax(0, 1fr); height: 330px; overflow: hidden; border: 1px solid #4a5871; border-radius: 10px; background: #0b1220; }
+    .line-gutter { margin: 0; padding: 13px 8px; overflow: hidden; border-right: 1px solid #334157; color: #738098; text-align: right; user-select: none; font: 12px/1.55 "SFMono-Regular", Consolas, monospace; }
+    .pine-editor { width: 100%; height: 100%; resize: none; padding: 13px; border: 0; outline: 0; background: transparent; color: #edf3ff; caret-color: var(--yellow); tab-size: 4; white-space: pre; overflow: auto; font: 13px/1.55 "SFMono-Regular", Consolas, monospace; }
+    .pine-editor::placeholder { color: #68758d; }
+    .editor-drop { outline: 3px solid var(--yellow); outline-offset: -3px; }
+    .syntax-runbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 11px; }
+    .syntax-privacy { color: #9ba8bd; font-size: 10px; }
+    .check-code-btn { min-height: 45px; padding: 10px 18px; border: 2px solid var(--ink); border-radius: 10px; background: var(--yellow); color: var(--ink); box-shadow: 4px 4px 0 var(--red-vivid); font-weight: 950; cursor: pointer; }
+    .check-code-btn:disabled { cursor: wait; opacity: .7; }
+    .compiler-settings { margin-top: 12px; border: 1px solid #46546a; border-radius: 9px; background: #172236; color: #d9e2f0; }
+    .compiler-settings summary { padding: 9px 11px; cursor: pointer; font-size: 11px; font-weight: 850; }
+    .compiler-settings-body { padding: 0 11px 11px; }
+    .compiler-settings-body label { display: grid; gap: 5px; color: #aab6c8; font-size: 10px; font-weight: 800; }
+    .compiler-settings-body input { width: 100%; min-height: 38px; padding: 8px 10px; border: 1px solid #53617a; border-radius: 7px; background: #0c1423; color: #fff; font-size: 12px; }
+    .compiler-settings-body p { margin: 7px 0 0; color: #8d9ab0; font-size: 10px; }
+    .result-side { min-width: 0; padding: 16px; background: #f3f6fb; }
+    .syntax-status { display: flex; align-items: center; gap: 10px; padding: 12px; border: 2px solid var(--line); border-radius: 12px; background: #fff; }
+    .status-light { width: 14px; height: 14px; flex: 0 0 auto; border: 2px solid var(--ink); border-radius: 50%; background: #aab2c0; }
+    .syntax-status[data-status="passed"] .status-light, .syntax-status[data-status="compiled"] .status-light { background: #24c279; }
+    .syntax-status[data-status="warnings"] .status-light, .syntax-status[data-status="unverified"] .status-light { background: var(--yellow); }
+    .syntax-status[data-status="errors"] .status-light { background: var(--red-vivid); }
+    .syntax-status[data-status="checking"] .status-light { background: var(--blue); animation: pulse 1s infinite alternate; }
+    @keyframes pulse { to { transform: scale(1.35); opacity: .55; } }
+    .syntax-status strong { display: block; font-size: 14px; }
+    .syntax-status span { display: block; margin-top: 2px; color: var(--muted); font-size: 11px; }
+    .syntax-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; margin: 10px 0; }
+    .syntax-stat { padding: 9px 7px; border: 1px solid var(--line); border-radius: 9px; background: #fff; text-align: center; }
+    .syntax-stat strong { display: block; font-size: 18px; }
+    .syntax-stat small { color: var(--muted); font-size: 9px; font-weight: 850; text-transform: uppercase; }
+    .issue-list { display: grid; gap: 7px; max-height: 295px; overflow: auto; padding-right: 3px; }
+    .issue-empty { padding: 28px 12px; border: 1px dashed #aeb7c6; border-radius: 10px; color: var(--muted); text-align: center; font-size: 12px; }
+    .issue-row { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px; width: 100%; padding: 9px; border: 1px solid var(--line); border-left: 5px solid #738096; border-radius: 8px; background: #fff; color: var(--ink); text-align: left; cursor: pointer; }
+    .issue-row[data-severity="error"] { border-left-color: var(--red-vivid); }
+    .issue-row[data-severity="warning"] { border-left-color: #e2aa00; }
+    .issue-row[data-severity="info"] { border-left-color: var(--blue); }
+    .issue-line { min-width: 42px; color: var(--muted); font: 700 10px/1.4 monospace; }
+    .issue-message strong { display: block; font-size: 11px; text-transform: capitalize; }
+    .issue-message span { display: block; margin-top: 2px; color: #4e5a6c; font-size: 11px; line-height: 1.35; }
+    .checker-footnote { margin: 10px 0 0; color: var(--muted); font-size: 10px; }
+
     details.gate { --gate-color: var(--blue); overflow: visible; border-top: 9px solid var(--gate-color); }
     #gates details.gate:nth-child(3n+1) { --gate-color: var(--blue); }
     #gates details.gate:nth-child(3n+2) { --gate-color: var(--yellow); }
@@ -379,9 +431,9 @@
     .mt5-table .value { width: 32%; color: #15243a; font-weight: 700; }
     .mt5-table .number { text-align: right; font-variant-numeric: tabular-nums; }
     .mt5-status { display: inline-block; min-width: 58px; padding: 2px 6px; border: 1px solid currentColor; border-radius: 2px; text-align: center; font-size: 10px; font-weight: 700; text-transform: uppercase; }
-    .mt5-status.pass { color: #167044; background: #e6f5ed; }
-    .mt5-status.review, .mt5-status.pending { color: #8a5a06; background: #fff4d2; }
-    .mt5-status.fail, .mt5-status.observed { color: #a12b25; background: #fde7e5; }
+    .mt5-status.pass, .mt5-status.info { color: #167044; background: #e6f5ed; }
+    .mt5-status.review, .mt5-status.pending, .mt5-status.warning { color: #8a5a06; background: #fff4d2; }
+    .mt5-status.fail, .mt5-status.observed, .mt5-status.error { color: #a12b25; background: #fde7e5; }
     .mt5-meter { display: grid; grid-template-columns: auto 1fr auto; gap: 8px; align-items: center; padding: 8px; border-bottom: 1px solid #c5ccd7; background: #f7f9fb; }
     .mt5-meter-track { height: 12px; border: 1px solid #8c99aa; background: #fff; }
     .mt5-meter-fill { height: 100%; background: #3868a6; }
@@ -418,6 +470,8 @@
       .thesis { grid-column: span 2; }
       .checklist, .flag-grid { grid-template-columns: 1fr; }
       .calc-fields { grid-template-columns: repeat(2, 1fr); }
+      .syntax-layout { grid-template-columns: 1fr; }
+      .code-side { border-right: 0; border-bottom: 2px solid var(--ink); }
     }
     @media (max-width: 720px) {
       .shell { width: min(100% - 20px, 1180px); }
@@ -448,6 +502,11 @@
       .mode-toggle { top: 10px; right: 10px; max-width: calc(100vw - 166px); min-height: 45px; padding: 8px 10px; box-shadow: 4px 4px 0 var(--blue); font-size: 11px; }
       .mode-toggle::before { width: 21px; height: 21px; flex: 0 0 auto; }
       .calc-fields, .calc-results { grid-template-columns: 1fr; }
+      .syntax-head { display: block; }
+      .syntax-mode-badge { display: inline-block; margin-top: 10px; }
+      .editor-shell { height: 300px; }
+      .syntax-runbar { align-items: flex-end; }
+      .syntax-privacy { max-width: 190px; }
       .report-dialog { width: calc(100% - 10px); max-height: calc(100vh - 10px); }
       .report-toolbar { align-items: flex-start; }
       .report-toolbar > span { display: none; }
@@ -493,6 +552,58 @@
   </nav>
 
   <main class="shell">
+    <section class="panel syntax-panel" id="syntaxChecker" aria-labelledby="syntaxTitle">
+      <div class="syntax-head">
+        <div>
+          <h2 id="syntaxTitle">Check the Pine code first</h2>
+          <p>Paste the whole script. The preflight runs in your browser and points to the exact line. It clearly separates local findings from an optional TradingView compiler result.</p>
+        </div>
+        <span class="syntax-mode-badge">Local · private · instant</span>
+      </div>
+      <div class="syntax-layout">
+        <div class="code-side">
+          <div class="code-toolbar">
+            <strong>Pine Script</strong>
+            <div class="code-toolbar-actions">
+              <input id="pineFileInput" type="file" accept=".pine,.txt,text/plain" hidden>
+              <button class="code-action" id="loadPineBtn" type="button">Open file</button>
+              <button class="code-action" id="samplePineBtn" type="button">Load sample</button>
+              <button class="code-action" id="clearPineBtn" type="button">Clear</button>
+            </div>
+          </div>
+          <div class="editor-shell" id="editorShell">
+            <pre class="line-gutter" id="lineGutter" aria-hidden="true">1</pre>
+            <textarea class="pine-editor" id="pineEditor" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="Pine Script source code" placeholder="//@version=6&#10;strategy(&quot;My strategy&quot;, overlay=true)&#10;&#10;// Paste the complete script here"></textarea>
+          </div>
+          <div class="syntax-runbar">
+            <span class="syntax-privacy">Code is not saved in browser storage. A configured compiler proxy sends it to TradingView only when you press Check.</span>
+            <button class="check-code-btn" id="checkCodeBtn" type="button">Check code</button>
+          </div>
+          <details class="compiler-settings">
+            <summary>Optional: verify with TradingView compiler</summary>
+            <div class="compiler-settings-body">
+              <label>Compiler proxy URL<input id="compilerProxy" type="url" inputmode="url" placeholder="https://your-worker.example.workers.dev"></label>
+              <p>Leave blank for private local preflight only. The static site cannot securely spoof TradingView’s required request headers, so official verification needs a small proxy.</p>
+            </div>
+          </details>
+        </div>
+        <div class="result-side" aria-live="polite">
+          <div class="syntax-status" id="syntaxStatus" data-status="idle">
+            <i class="status-light" aria-hidden="true"></i>
+            <div><strong id="syntaxStatusTitle">Ready to check</strong><span id="syntaxStatusText">Paste the complete script, then press Check code.</span></div>
+          </div>
+          <div class="syntax-stats">
+            <div class="syntax-stat"><strong id="syntaxLineCount">0</strong><small>Lines</small></div>
+            <div class="syntax-stat"><strong id="syntaxErrorCount">0</strong><small>Errors</small></div>
+            <div class="syntax-stat"><strong id="syntaxWarningCount">0</strong><small>Warnings</small></div>
+            <div class="syntax-stat"><strong id="syntaxVersion">—</strong><small>Version</small></div>
+          </div>
+          <div class="issue-list" id="syntaxIssues"><div class="issue-empty">Findings will appear here. Click any finding to jump to its line.</div></div>
+          <p class="checker-footnote" id="checkerFootnote">Preflight catches common structural mistakes. Only TradingView’s compiler can confirm complete Pine syntax and type rules.</p>
+        </div>
+      </div>
+    </section>
+
     <section class="panel setup" aria-labelledby="setupTitle">
       <div class="section-head">
         <div><h2 id="setupTitle">Audit context</h2><p>Lock the test conditions before inspecting results. Your notes and checklist progress stay in this browser.</p></div>
@@ -542,6 +653,7 @@
     <div id="reportBody"></div>
   </dialog>
 
+  <script src="syntax-checker.js"></script>
   <script>
     const quantGates = [
       {
@@ -769,13 +881,163 @@
     ];
 
     const storageKey = 'quant-audit-workflow-v1';
-    let state = { mode: 'normal', checks: {}, flags: {}, decisions: {}, fields: {}, metrics: {} };
+    let state = { mode: 'normal', checks: {}, flags: {}, decisions: {}, fields: {}, metrics: {}, syntaxReport: null, compilerProxy: '' };
     try { state = { ...state, ...JSON.parse(localStorage.getItem(storageKey) || '{}') }; } catch (_) {}
     if (!['normal', 'quant'].includes(state.mode)) state.mode = 'normal';
     state.metrics ||= {};
+    state.syntaxReport ||= null;
+    state.compilerProxy ||= '';
     let gates = state.mode === 'quant' ? quantGates : normalGates;
 
     const esc = value => String(value).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+
+    const pineEditor = document.getElementById('pineEditor');
+    const lineGutter = document.getElementById('lineGutter');
+    const syntaxStatus = document.getElementById('syntaxStatus');
+    const syntaxStatusTitle = document.getElementById('syntaxStatusTitle');
+    const syntaxStatusText = document.getElementById('syntaxStatusText');
+    const syntaxIssues = document.getElementById('syntaxIssues');
+    const checkCodeBtn = document.getElementById('checkCodeBtn');
+    const compilerProxy = document.getElementById('compilerProxy');
+
+    function updateEditorChrome() {
+      const count = Math.max(1, pineEditor.value.split('\n').length);
+      lineGutter.textContent = Array.from({ length: count }, (_, i) => i + 1).join('\n');
+      document.getElementById('syntaxLineCount').textContent = pineEditor.value ? count : 0;
+    }
+
+    function jumpToPineLine(line, column = 1) {
+      const targetLine = Math.max(1, Number(line) || 1);
+      const targetColumn = Math.max(1, Number(column) || 1);
+      const lines = pineEditor.value.split('\n');
+      const offset = lines.slice(0, targetLine - 1).reduce((sum, value) => sum + value.length + 1, 0) + Math.min(targetColumn - 1, (lines[targetLine - 1] || '').length);
+      pineEditor.focus();
+      pineEditor.setSelectionRange(offset, offset);
+      const lineHeight = parseFloat(getComputedStyle(pineEditor).lineHeight) || 20;
+      pineEditor.scrollTop = Math.max(0, (targetLine - 3) * lineHeight);
+      lineGutter.scrollTop = pineEditor.scrollTop;
+    }
+
+    function dedupeIssues(items) {
+      const seen = new Set();
+      return items.filter(item => {
+        const key = `${item.source}|${item.severity}|${item.line}|${item.column}|${item.message}`;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+    }
+
+    function summarizeSyntax(local, official) {
+      const compilerIssues = official?.issues || [];
+      const allIssues = dedupeIssues([...compilerIssues, ...(local?.issues || [])]);
+      const authoritative = official?.available ? compilerIssues : (local?.issues || []);
+      const errors = authoritative.filter(item => item.severity === 'error').length;
+      const warnings = authoritative.filter(item => item.severity === 'warning').length;
+      let status = 'idle';
+      let title = 'Ready to check';
+      let text = 'Paste the complete script, then press Check code.';
+      if (official?.available && official.compiled) {
+        status = warnings ? 'warnings' : 'compiled';
+        title = warnings ? 'Compiled with warnings' : 'TradingView compiler passed';
+        text = warnings ? 'The compiler accepted the script, but warnings still need review.' : 'TradingView accepted the script. Continue with the audit and backtest.';
+      } else if (official?.available && !official.compiled) {
+        status = 'errors';
+        title = 'TradingView compiler found errors';
+        text = 'Fix the compiler errors, then run the check again.';
+      } else if (local?.status === 'empty') {
+        status = 'errors';
+        title = 'No code to check';
+        text = 'Paste or open a complete Pine Script file.';
+      } else if ((local?.errors || 0) > 0) {
+        status = 'errors';
+        title = 'Preflight found errors';
+        text = official?.error || 'Fix the structural errors before testing the strategy.';
+      } else if ((local?.warnings || 0) > 0) {
+        status = 'warnings';
+        title = 'Preflight passed with warnings';
+        text = official?.error ? `Compiler not verified: ${official.error}` : 'Review the warnings. TradingView compiler verification has not been completed.';
+      } else if (local) {
+        status = official?.error ? 'unverified' : 'unverified';
+        title = 'Preflight passed';
+        text = official?.error ? `TradingView compiler was unavailable: ${official.error}` : 'No common structural issue found. This is not yet an official TradingView compile result.';
+      }
+      return { status, title, text, errors, warnings, allIssues };
+    }
+
+    function renderSyntaxReport(report = state.syntaxReport) {
+      if (!report) {
+        syntaxStatus.dataset.status = 'idle';
+        syntaxStatusTitle.textContent = 'Ready to check';
+        syntaxStatusText.textContent = 'Paste the complete script, then press Check code.';
+        document.getElementById('syntaxErrorCount').textContent = '0';
+        document.getElementById('syntaxWarningCount').textContent = '0';
+        document.getElementById('syntaxVersion').textContent = '—';
+        syntaxIssues.innerHTML = '<div class="issue-empty">Findings will appear here. Click any finding to jump to its line.</div>';
+        return;
+      }
+      const summary = summarizeSyntax(report.local, report.official);
+      syntaxStatus.dataset.status = summary.status;
+      syntaxStatusTitle.textContent = summary.title;
+      syntaxStatusText.textContent = summary.text;
+      document.getElementById('syntaxLineCount').textContent = report.local?.lines || 0;
+      document.getElementById('syntaxErrorCount').textContent = summary.errors;
+      document.getElementById('syntaxWarningCount').textContent = summary.warnings;
+      document.getElementById('syntaxVersion').textContent = report.local?.version ? `v${report.local.version}` : '—';
+      if (!summary.allIssues.length) {
+        syntaxIssues.innerHTML = '<div class="issue-empty">No issues reported. Continue with backtesting and the audit checklist.</div>';
+      } else {
+        syntaxIssues.innerHTML = summary.allIssues.map(item => `<button class="issue-row" type="button" data-line="${item.line || 1}" data-column="${item.column || 1}" data-severity="${esc(item.severity)}"><span class="issue-line">${item.line ? `L${item.line}${item.column ? `:${item.column}` : ''}` : 'General'}</span><span class="issue-message"><strong>${esc(item.source === 'tradingview' ? `Compiler ${item.severity}` : item.severity)}</strong><span>${esc(item.message)}</span></span></button>`).join('');
+      }
+      document.getElementById('checkerFootnote').textContent = report.official?.available
+        ? 'Compiler result received through the configured proxy. Passing syntax does not prove non-repainting behavior or profitability.'
+        : 'Preflight catches common structural mistakes. Only TradingView’s compiler can confirm complete Pine syntax and type rules.';
+    }
+
+    async function runSyntaxCheck() {
+      if (!window.PineSyntaxChecker) {
+        syntaxStatus.dataset.status = 'errors';
+        syntaxStatusTitle.textContent = 'Checker failed to load';
+        syntaxStatusText.textContent = 'Reload the page and try again.';
+        return;
+      }
+      checkCodeBtn.disabled = true;
+      checkCodeBtn.textContent = 'Checking…';
+      syntaxStatus.dataset.status = 'checking';
+      syntaxStatusTitle.textContent = 'Checking code';
+      syntaxStatusText.textContent = 'Running private preflight checks…';
+      const source = pineEditor.value;
+      const local = window.PineSyntaxChecker.checkLocal(source);
+      let official = { attempted: false, available: false, compiled: null, issues: [] };
+      renderSyntaxReport({ local, official });
+
+      const proxy = compilerProxy.value.trim();
+      if (proxy && source.trim()) {
+        syntaxStatus.dataset.status = 'checking';
+        syntaxStatusTitle.textContent = 'Preflight complete';
+        syntaxStatusText.textContent = 'Waiting for TradingView compiler verification…';
+        try {
+          official = await window.PineSyntaxChecker.checkOfficial(source, proxy);
+        } catch (error) {
+          official = { attempted: true, available: false, compiled: null, issues: [], error: error.message };
+        }
+      }
+
+      state.compilerProxy = proxy;
+      state.syntaxReport = { local, official, checkedAt: new Date().toISOString() };
+      if (official.available && official.compiled) {
+        state.checks['normal-code-0-0'] = true;
+        state.flags['normal-code-flag-0'] = false;
+      } else if (official.available && !official.compiled) {
+        state.flags['normal-code-flag-0'] = true;
+        state.decisions['normal-code'] = 'fail';
+      }
+      persist();
+      renderSyntaxReport();
+      updateUI();
+      checkCodeBtn.disabled = false;
+      checkCodeBtn.textContent = 'Check again';
+    }
 
     function render() {
       gates = state.mode === 'quant' ? quantGates : normalGates;
@@ -932,6 +1194,7 @@
       const observedFlags = gates.flatMap(g => g.flags.map((flag, index) => ({ gate: g, flag, observed: Boolean(state.flags[`${g.id}-flag-${index}`]) }))).filter(x => x.observed);
       const counts = ['pass', 'review', 'fail', 'pending'].reduce((out, key) => ({ ...out, [key]: decisions.filter(v => v === key).length }), {});
       const stats = getEdgeStats();
+      const syntaxSummary = state.syntaxReport ? summarizeSyntax(state.syntaxReport.local, state.syntaxReport.official) : null;
       const value = (key, fallback = '—') => state.fields[key] ? esc(state.fields[key]) : fallback;
       const metric = (number, digits = 2, suffix = '') => Number.isFinite(number) ? `${number >= 0 ? '' : '−'}${Math.abs(number).toFixed(digits)}${suffix}` : '—';
       const status = raw => `<span class="mt5-status ${esc(raw)}">${esc(raw)}</span>`;
@@ -947,12 +1210,22 @@
       const flagRows = observedFlags.length
         ? observedFlags.map(item => `<tr><td>${esc(item.gate.title)}</td><td colspan="2">${esc(item.flag)}</td><td>${status('observed')}</td></tr>`).join('')
         : `<tr><td colspan="3">No stop signs marked in the selected workflow.</td><td>${status('pass')}</td></tr>`;
+      const syntaxRows = syntaxSummary?.allIssues?.length
+        ? syntaxSummary.allIssues.map(item => `<tr><td>${esc(item.source === 'tradingview' ? 'TradingView' : 'Preflight')}</td><td class="number">${item.line || '—'}</td><td>${esc(item.message)}</td><td>${status(item.severity)}</td></tr>`).join('')
+        : `<tr><td colspan="3">${state.syntaxReport ? 'No syntax findings were reported.' : 'Syntax checker has not been run.'}</td><td>${status(state.syntaxReport ? 'pass' : 'pending')}</td></tr>`;
 
       return `<article class="mt5-report">
         <header class="mt5-report-header">
           <div><h2>MT5-style Strategy Audit Report</h2><p>${value('name', 'Unnamed strategy')} · ${value('symbol', 'Symbol not supplied')}</p></div>
           <div class="mt5-report-stamp"><strong>${esc(state.mode === 'quant' ? 'Quant Mode' : 'Normal Trader')}</strong><br>${esc(date)}</div>
         </header>
+        <div class="mt5-section-title">Pine syntax check</div>
+        <div class="mt5-table-wrap"><table class="mt5-table"><tbody>
+          <tr><td class="label">Result</td><td class="value">${syntaxSummary ? esc(syntaxSummary.title) : 'Not checked'}</td><td class="label">Verification</td><td class="value">${state.syntaxReport?.official?.available ? 'TradingView compiler' : state.syntaxReport ? 'Local preflight only' : '—'}</td></tr>
+          <tr><td class="label">Pine version</td><td class="value number">${state.syntaxReport?.local?.version ? `v${state.syntaxReport.local.version}` : '—'}</td><td class="label">Declaration</td><td class="value">${state.syntaxReport?.local?.declaration ? `${esc(state.syntaxReport.local.declaration)}()` : '—'}</td></tr>
+          <tr><td class="label">Lines checked</td><td class="value number">${state.syntaxReport?.local?.lines || '—'}</td><td class="label">Errors / warnings</td><td class="value number">${syntaxSummary ? `${syntaxSummary.errors} / ${syntaxSummary.warnings}` : '—'}</td></tr>
+        </tbody></table></div>
+        <div class="mt5-table-wrap"><table class="mt5-table"><thead><tr><th style="width:16%">Source</th><th style="width:10%">Line</th><th>Finding</th><th style="width:12%">Severity</th></tr></thead><tbody>${syntaxRows}</tbody></table></div>
         <div class="mt5-section-title">Test configuration</div>
         <div class="mt5-table-wrap"><table class="mt5-table"><tbody>
           <tr><td class="label">Strategy</td><td class="value">${value('name')}</td><td class="label">Symbol</td><td class="value">${value('symbol')}</td></tr>
@@ -1008,9 +1281,13 @@
 
       const decisions = gates.map(g => state.decisions[g.id]);
       const hardFail = Object.entries(state.flags).some(([key, value]) => value && gates.some(g => key.startsWith(g.id + '-flag-')));
+      const syntaxFailed = Boolean(state.syntaxReport && ((state.syntaxReport.local?.errors || 0) > 0 || (state.syntaxReport.official?.available && !state.syntaxReport.official?.compiled)));
       let title = 'Audit incomplete';
       let reason = 'Start with Gate 1. Set each gate to Pass, Review or Fail after checking the evidence.';
-      if (hardFail || decisions.includes('fail')) {
+      if (syntaxFailed) {
+        title = 'Reject';
+        reason = 'The Pine syntax check contains errors. Fix the code and rerun the checker before evaluating the strategy.';
+      } else if (hardFail || decisions.includes('fail')) {
         title = 'Reject';
         reason = 'At least one hard failure is present. Fix it and restart the affected test before considering capital.';
       } else if (decisions.every(v => v === 'pass')) {
@@ -1024,6 +1301,72 @@
       document.getElementById('verdictReason').textContent = reason;
     }
 
+    pineEditor.addEventListener('input', updateEditorChrome);
+    pineEditor.addEventListener('scroll', () => { lineGutter.scrollTop = pineEditor.scrollTop; });
+    pineEditor.addEventListener('keydown', event => {
+      if (event.key !== 'Tab') return;
+      event.preventDefault();
+      const start = pineEditor.selectionStart;
+      const end = pineEditor.selectionEnd;
+      pineEditor.value = `${pineEditor.value.slice(0, start)}    ${pineEditor.value.slice(end)}`;
+      pineEditor.setSelectionRange(start + 4, start + 4);
+      updateEditorChrome();
+    });
+    syntaxIssues.addEventListener('click', event => {
+      const row = event.target.closest('[data-line]');
+      if (row) jumpToPineLine(row.dataset.line, row.dataset.column);
+    });
+    checkCodeBtn.addEventListener('click', runSyntaxCheck);
+    compilerProxy.value = state.compilerProxy;
+    compilerProxy.addEventListener('change', () => {
+      state.compilerProxy = compilerProxy.value.trim();
+      persist();
+    });
+    document.getElementById('loadPineBtn').addEventListener('click', () => document.getElementById('pineFileInput').click());
+    document.getElementById('pineFileInput').addEventListener('change', async event => {
+      const file = event.target.files?.[0];
+      if (!file) return;
+      if (file.size > 200000) {
+        alert('Choose a Pine file smaller than 200 KB.');
+        event.target.value = '';
+        return;
+      }
+      pineEditor.value = await file.text();
+      updateEditorChrome();
+      pineEditor.focus();
+      event.target.value = '';
+    });
+    document.getElementById('samplePineBtn').addEventListener('click', () => {
+      pineEditor.value = `//@version=6\nstrategy("EMA cross sample", overlay=true, commission_type=strategy.commission.percent, commission_value=0.1)\n\nfast = ta.ema(close, 20)\nslow = ta.ema(close, 50)\n\nif ta.crossover(fast, slow)\n    strategy.entry("Long", strategy.long)\n\nif ta.crossunder(fast, slow)\n    strategy.close("Long")\n\nplot(fast, color=color.blue)\nplot(slow, color=color.red)`;
+      updateEditorChrome();
+      pineEditor.focus();
+    });
+    document.getElementById('clearPineBtn').addEventListener('click', () => {
+      pineEditor.value = '';
+      state.syntaxReport = null;
+      persist();
+      updateEditorChrome();
+      renderSyntaxReport();
+      pineEditor.focus();
+    });
+    const editorShell = document.getElementById('editorShell');
+    ['dragenter', 'dragover'].forEach(type => editorShell.addEventListener(type, event => {
+      event.preventDefault();
+      editorShell.classList.add('editor-drop');
+    }));
+    ['dragleave', 'drop'].forEach(type => editorShell.addEventListener(type, event => {
+      event.preventDefault();
+      editorShell.classList.remove('editor-drop');
+    }));
+    editorShell.addEventListener('drop', async event => {
+      const file = event.dataTransfer?.files?.[0];
+      if (!file) return;
+      if (file.size > 200000) { alert('Choose a Pine file smaller than 200 KB.'); return; }
+      pineEditor.value = await file.text();
+      updateEditorChrome();
+      pineEditor.focus();
+    });
+
     document.getElementById('modeToggle').addEventListener('click', () => {
       state.mode = state.mode === 'quant' ? 'normal' : 'quant';
       persist();
@@ -1033,7 +1376,10 @@
 
     document.getElementById('resetBtn').addEventListener('click', () => {
       if (!confirm('Reset every field, decision and checklist item?')) return;
-      state = { mode: state.mode, checks: {}, flags: {}, decisions: {}, fields: {}, metrics: {} };
+      state = { mode: state.mode, checks: {}, flags: {}, decisions: {}, fields: {}, metrics: {}, syntaxReport: null, compilerProxy: state.compilerProxy };
+      pineEditor.value = '';
+      updateEditorChrome();
+      renderSyntaxReport();
       persist(); render();
     });
 
@@ -1043,6 +1389,7 @@
         mode: state.mode,
         context: state.fields,
         edgeCalculator: state.metrics,
+        syntaxCheck: state.syntaxReport,
         verdict: document.getElementById('verdict').textContent,
         gateDecisions: state.decisions,
         completedChecks: Object.entries(state.checks).filter(([,v]) => v).map(([k]) => k),
@@ -1084,6 +1431,8 @@
       URL.revokeObjectURL(url);
     });
 
+    updateEditorChrome();
+    renderSyntaxReport();
     render();
   </script>
 </body>
