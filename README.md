@@ -43,6 +43,37 @@ A deeper audit covering:
 
 Use the fixed switch in the top-right corner to change modes.
 
+## Pine Script syntax checker
+
+Paste a complete Pine Script or open/drop a `.pine` or `.txt` file. The checker runs a private browser-side preflight that detects common problems such as:
+
+- Missing or duplicate Pine version directives
+- Missing or duplicate `indicator()`, `strategy()`, or `library()` declarations
+- Unclosed or mismatched brackets and strings
+- Unsupported smart punctuation and block comments
+- Strategy order functions used without `strategy()`
+- Literal array index errors and empty-array access
+- Plotting calls that appear inside local scope
+- Common future-leak and repaint-risk patterns
+
+Every finding includes a line number. Select it to jump to that location in the editor. Source code is not stored in `localStorage`.
+
+### Local preflight versus compiler verification
+
+The local checker is intentionally labeled **preflight**. It cannot reproduce every Pine type, overload, scope, or compiler rule.
+
+The optional TradingView verification uses the same facade request pattern as [erevus-cn/pinescript_syntax_checker](https://github.com/erevus-cn/pinescript_syntax_checker). Because GitHub Pages is static and browsers cannot safely supply TradingView's required request headers, compiler verification needs a small server-side proxy.
+
+An optional Cloudflare Worker implementation is included at:
+
+```text
+worker/tradingview-compiler.js
+```
+
+Deploy the Worker, set `ALLOWED_ORIGIN=https://0xtrvkc.github.io`, and paste its HTTPS URL into **Optional: verify with TradingView compiler**. The TradingView facade is undocumented and may change without notice.
+
+Third-party attribution is recorded in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
 ## Edge calculator
 
 Normal Trader mode includes a quick calculator for:
@@ -85,6 +116,9 @@ This is an MT5-inspired audit layout, not an exported MetaTrader 5 report.
 
 ## Features
 
+- Browser-native Pine Script preflight with line-specific findings
+- Optional TradingView compiler verification through a configurable proxy
+- Syntax results included in the MT5-style report
 - Responsive flowchart for desktop and mobile
 - Fixed progress indicator while scrolling
 - Plain-language and advanced audit modes
