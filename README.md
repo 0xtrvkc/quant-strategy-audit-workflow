@@ -72,7 +72,7 @@ For each market it records:
 - Whether exit activity continued through the end of the test
 - An optional TradingView screenshot
 
-The table can be filled manually or imported from CSV. Accepted headers are:
+The table can be filled manually or imported from CSV. Select **Download CSV example** in the Evidence Lab for a ready-to-edit file. Accepted headers are:
 
 ```text
 symbol,timeframe,period,trades,return,maxdd,pf,benchmark,avghold,oos,exits
