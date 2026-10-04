@@ -1,0 +1,11 @@
+{
+  "claims": [
+    "Commission is explicitly configured"
+  ],
+  "evidence": [
+    {
+      "title": "Pine line 2",
+      "text": "strategy(\"test\", commission_value=0.1)"
+    }
+  ]
+}

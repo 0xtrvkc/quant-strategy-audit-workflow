@@ -596,6 +596,7 @@
       body.printing-report .mt5-section-title, body.printing-report .mt5-table th, body.printing-report .mt5-table td { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
     }
   </style>
+<link rel="stylesheet" href="jev/style.css">
 </head>
 <body>
   <button class="mode-toggle" id="modeToggle" type="button" aria-pressed="false">Switch to Quant Mode</button>
@@ -742,6 +743,7 @@
       </div>
     </section>
 
+<div id="jevMount"></div>
     <div id="gates"></div>
 
     <section class="panel verdict-panel" aria-live="polite">
@@ -1776,6 +1778,7 @@
       document.body.classList.add('printing-report');
       window.print();
     });
+    window.JevApp = { auditContext: () => ({ fields: {...state.fields}, evidenceRows: state.evidenceRows.map(({evidenceName,id,...row}) => row), metrics: {...state.metrics} }) };
     window.addEventListener('afterprint', () => document.body.classList.remove('printing-report'));
     document.getElementById('downloadReportBtn').addEventListener('click', () => {
       refreshReport();
@@ -1794,5 +1797,10 @@
     renderSyntaxReport();
     render();
   </script>
+<script src="jev/config.js"></script>
+<script src="jev/contract.js"></script>
+<script src="jev/feature.js"></script>
+<script src="jev/client.js"></script>
+<script src="jev/adapter.js"></script>
 </body>
 </html>

@@ -158,3 +158,10 @@ The multi-market and exit-integrity workflow was informed by the testing ideas d
 This tool is a research workflow, not a profitability guarantee or investment advice. Backtests are simulations. Real fills, fees, liquidity, latency, market regimes and future performance can differ materially.
 
 A strategy should not reach live trading simply because every box is checked. The evidence behind each answer still matters.
+
+
+## Optional Jev upgrade
+
+**Evidence-aware audit.** Enter up to eight claims, one per line. The feature reads the current Pine editor, additional textual observations, and self-reported Evidence Lab market rows. It preserves line references in source chunks. Each result pairs a supported/contradicted/insufficient judgment with a selected evidence excerpt. AI findings never alter gate decisions or the existing final audit verdict.
+
+See [JEV.md](JEV.md) for browser-first setup, privacy, input limits, tests and live-evaluation limitations. Existing functionality works without Jev configuration.
