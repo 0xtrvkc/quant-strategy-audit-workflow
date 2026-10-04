@@ -692,7 +692,7 @@
           <h2 id="evidenceTitle">Evidence Lab</h2>
           <p>One profitable chart is not proof. Record the same strategy on several markets, confirm it kept exiting, and compare it with a simple benchmark.</p>
         </div>
-        <span class="evidence-badge">Multi-market proof</span>
+        <span class="evidence-badge">Multi-market evidence</span>
       </div>
       <div class="evidence-body">
         <div class="evidence-flow" aria-label="Evidence workflow">
@@ -720,7 +720,7 @@
           </table>
         </div>
         <div class="evidence-summary" aria-live="polite">
-          <div class="evidence-stat"><small>Complete markets</small><strong id="evidenceMarketCount">0</strong></div>
+          <div class="evidence-stat"><small>Distinct markets</small><strong id="evidenceMarketCount">0</strong></div>
           <div class="evidence-stat"><small>Profitable</small><strong id="evidenceProfitableCount">—</strong></div>
           <div class="evidence-stat"><small>Median return</small><strong id="evidenceMedianReturn">—</strong></div>
           <div class="evidence-stat"><small>Beat benchmark</small><strong id="evidenceBeatBenchmark">—</strong></div>
@@ -733,7 +733,9 @@
             Headers accepted: <code>symbol,timeframe,period,trades,return,maxdd,pf,benchmark,avghold,oos,exits</code>.
             <ul>
               <li>Under 30 trades is flagged as a weak sample; 100+ is preferable when strategy frequency allows.</li>
-              <li>One market is never treated as proof that an edge transfers.</li>
+              <li>Passing requires at least three distinct symbols, no incomplete or duplicate results, benchmarks for every market, and at least half beating their benchmark.</li>
+              <li>Repeated tests on the same symbol are useful diagnostics, but do not add distinct markets.</li>
+              <li>Aggregate market returns cannot be used to bootstrap a strategy return path. Export dated per-bar equity or returns from your backtest engine for that analysis.</li>
               <li>If exits stopped before the test ended, the audit is automatically rejected.</li>
               <li>An out-of-sample result means data that was not inspected while building or tuning the strategy.</li>
             </ul>
@@ -775,6 +777,7 @@
   </dialog>
 
   <script src="syntax-checker.js"></script>
+  <script src="evidence.js"></script>
   <script>
     const quantGates = [
       {
@@ -1172,49 +1175,9 @@
       };
     }
 
-    function evidenceNumber(value) {
-      if (value === '' || value === null || value === undefined) return null;
-      const number = Number(String(value).replace(/[%,$]/g, '').trim());
-      return Number.isFinite(number) ? number : null;
-    }
-
-    function completeEvidenceRows() {
-      return state.evidenceRows.filter(row => row.symbol.trim() && evidenceNumber(row.trades) > 0 && evidenceNumber(row.netReturn) !== null && ['yes','no'].includes(row.oos) && ['yes','no'].includes(row.exits));
-    }
-
-    function summarizeEvidence() {
-      const rows = completeEvidenceRows();
-      const returns = rows.map(row => evidenceNumber(row.netReturn)).sort((a, b) => a - b);
-      const median = returns.length ? (returns.length % 2 ? returns[(returns.length - 1) / 2] : (returns[returns.length / 2 - 1] + returns[returns.length / 2]) / 2) : null;
-      const benchmarkRows = rows.filter(row => evidenceNumber(row.benchmark) !== null);
-      const beatBenchmark = benchmarkRows.filter(row => evidenceNumber(row.netReturn) > evidenceNumber(row.benchmark)).length;
-      const profitable = rows.filter(row => evidenceNumber(row.netReturn) > 0).length;
-      const oos = rows.filter(row => row.oos === 'yes').length;
-      const exitFailures = rows.filter(row => row.exits === 'no');
-      const weakSamples = rows.filter(row => evidenceNumber(row.trades) < 30);
-      const findings = [];
-      let level = 'review';
-      let title = 'More evidence needed';
-      if (!rows.length) findings.push('Add at least two complete market results. Three or more gives a more useful transferability check.');
-      else if (rows.length === 1) findings.push('Only one complete market was tested. This cannot show whether the edge transfers.');
-      if (exitFailures.length) findings.push(`Exit activity stopped on ${exitFailures.map(row => row.symbol).join(', ')}. The result may have silently become buy-and-hold.`);
-      if (weakSamples.length) findings.push(`${weakSamples.map(row => row.symbol).join(', ')} ${weakSamples.length === 1 ? 'has' : 'have'} fewer than 30 trades.`);
-      if (rows.length && !oos) findings.push('No complete result is marked as genuinely unseen data.');
-      if (rows.length >= 2 && profitable / rows.length < .5) findings.push('Fewer than half of the tested markets are profitable.');
-      if (median !== null && median <= 0) findings.push('Median return across complete markets is not positive.');
-      if (!benchmarkRows.length && rows.length) findings.push('No benchmark returns were entered, so market beta cannot be separated from strategy edge.');
-      if (exitFailures.length) {
-        level = 'fail';
-        title = 'Reject: execution evidence is invalid';
-      } else if (rows.length >= 3 && oos > 0 && median > 0 && profitable / rows.length >= .5 && !weakSamples.length) {
-        level = 'pass';
-        title = 'Evidence check passed';
-        if (!findings.length) findings.push('The strategy has a positive median across several markets, includes unseen data, and shows continuing exits.');
-      } else if (rows.length) {
-        title = 'Evidence needs review';
-      }
-      return { rows, median, benchmarkRows, beatBenchmark, profitable, oos, exitFailures, weakSamples, findings, level, title };
-    }
+    function evidenceNumber(value) { return AuditEvidence.number(value); }
+    function completeEvidenceRows() { return state.evidenceRows.filter(AuditEvidence.valid); }
+    function summarizeEvidence() { return AuditEvidence.summarize(state.evidenceRows); }
 
     function renderEvidence() {
       if (!state.evidenceRows.length) state.evidenceRows.push(makeEvidenceRow({ symbol: state.fields.symbol || '', timeframe: state.fields.timeframe || '', period: state.fields.dates || '' }));
@@ -1239,7 +1202,7 @@
 
     function updateEvidenceSummary() {
       const summary = summarizeEvidence();
-      document.getElementById('evidenceMarketCount').textContent = summary.rows.length;
+      document.getElementById('evidenceMarketCount').textContent = summary.distinctMarkets;
       document.getElementById('evidenceProfitableCount').textContent = summary.rows.length ? `${summary.profitable}/${summary.rows.length}` : '—';
       document.getElementById('evidenceMedianReturn').textContent = summary.median === null ? '—' : `${summary.median >= 0 ? '+' : ''}${summary.median.toFixed(2)}%`;
       document.getElementById('evidenceBeatBenchmark').textContent = summary.benchmarkRows.length ? `${summary.beatBenchmark}/${summary.benchmarkRows.length}` : '—';
@@ -1455,7 +1418,7 @@
         : `<tr><td colspan="3">${state.syntaxReport ? 'No syntax findings were reported.' : 'Syntax checker has not been run.'}</td><td>${status(state.syntaxReport ? 'pass' : 'pending')}</td></tr>`;
       const evidenceRows = state.evidenceRows.some(row => row.symbol || row.trades || row.netReturn)
         ? state.evidenceRows.filter(row => row.symbol || row.trades || row.netReturn).map(row => {
-          const complete = row.symbol.trim() && evidenceNumber(row.trades) > 0 && evidenceNumber(row.netReturn) !== null && ['yes','no'].includes(row.oos) && ['yes','no'].includes(row.exits);
+          const complete = AuditEvidence.valid(row);
           const rowStatus = row.exits === 'no' ? 'fail' : complete ? 'pass' : 'pending';
           const fmt = (raw, suffix = '') => evidenceNumber(raw) === null ? '—' : `${evidenceNumber(raw).toFixed(suffix ? 2 : 0)}${suffix}`;
           return `<tr><td>${esc(row.symbol || '—')}</td><td>${esc(row.timeframe || '—')}</td><td class="number">${fmt(row.trades)}</td><td class="number">${fmt(row.netReturn, '%')}</td><td class="number">${fmt(row.maxDD, '%')}</td><td class="number">${evidenceNumber(row.profitFactor) === null ? '—' : evidenceNumber(row.profitFactor).toFixed(3)}</td><td class="number">${fmt(row.benchmark, '%')}</td><td>${row.oos === 'yes' ? 'Yes' : row.oos === 'no' ? 'No' : '—'}</td><td>${row.exits === 'yes' ? 'Yes' : row.exits === 'no' ? 'Stopped' : '—'}</td><td>${evidenceImages.has(row.id) ? esc(row.evidenceName) : row.evidenceName ? 'Reattach file' : '—'}</td><td>${status(rowStatus)}</td></tr>`;
@@ -1480,7 +1443,7 @@
         <div class="mt5-table-wrap"><table class="mt5-table"><thead><tr><th style="width:16%">Source</th><th style="width:10%">Line</th><th>Finding</th><th style="width:12%">Severity</th></tr></thead><tbody>${syntaxRows}</tbody></table></div>
         <div class="mt5-section-title">Multi-market evidence</div>
         <div class="mt5-table-wrap"><table class="mt5-table"><tbody>
-          <tr><td class="label">Evidence verdict</td><td class="value">${esc(evidence.title)}</td><td class="label">Complete markets</td><td class="value number">${evidence.rows.length}</td></tr>
+          <tr><td class="label">Evidence verdict</td><td class="value">${esc(evidence.title)}</td><td class="label">Distinct markets</td><td class="value number">${evidence.distinctMarkets}</td></tr>
           <tr><td class="label">Profitable markets</td><td class="value number">${evidence.rows.length ? `${evidence.profitable} / ${evidence.rows.length}` : '—'}</td><td class="label">Median return</td><td class="value number">${evidence.median === null ? '—' : `${evidence.median >= 0 ? '+' : ''}${evidence.median.toFixed(2)}%`}</td></tr>
           <tr><td class="label">Beat benchmark</td><td class="value number">${evidence.benchmarkRows.length ? `${evidence.beatBenchmark} / ${evidence.benchmarkRows.length}` : '—'}</td><td class="label">Unseen tests</td><td class="value number">${evidence.oos}</td></tr>
         </tbody></table></div>

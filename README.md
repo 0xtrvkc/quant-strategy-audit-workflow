@@ -80,7 +80,7 @@ symbol,timeframe,period,trades,return,maxdd,pf,benchmark,avghold,oos,exits
 
 The app automatically calculates profitable-market count, median return, benchmark wins and out-of-sample coverage. It warns about fewer than 30 trades, missing benchmarks, no unseen test, a non-positive median, and weak transferability.
 
-If a strategy stops exiting before the test ends, the audit is rejected because the result may have silently become buy-and-hold. A small-live verdict also requires at least three complete markets, a positive median, at least one unseen test, continuing exits and no weak trade sample.
+If a strategy stops exiting before the test ends, the audit is rejected because the result may have silently become buy-and-hold. A small-live verdict also requires at least three distinct market symbols, no duplicate or incomplete entered results, a positive median, at least one unseen test, continuing exits and no weak trade sample. Every complete result needs a benchmark, at least half must beat it, and any supplied profit factor must exceed 1. Repeated tests on a symbol remain visible but cannot manufacture market diversity.
 
 Evidence screenshots are kept only in the current page session. Their filenames remain in saved progress as a reminder to reattach them after reloading. Attached screenshots are embedded in reports generated during that session.
 
@@ -158,3 +158,19 @@ The multi-market and exit-integrity workflow was informed by the testing ideas d
 This tool is a research workflow, not a profitability guarantee or investment advice. Backtests are simulations. Real fills, fees, liquidity, latency, market regimes and future performance can differ materially.
 
 A strategy should not reach live trading simply because every box is checked. The evidence behind each answer still matters.
+
+## Research evidence integrity
+
+The shared `evidence.js` engine powers the screen, report and JSON summary. Numeric whitespace is missing data, not zero. Trade counts must be positive integers; returns below −100%, drawdowns outside 0–100%, negative profit factors, and invalid supplied benchmarks cannot produce a passing verdict. A stopped exit rejects the audit even if other fields on that row are incomplete.
+
+These constraints apply to the existing unlevered percentage evidence format. If a different account model legitimately permits losses beyond initial capital, document it separately rather than fitting it into this gate.
+
+[PyBroker](https://www.pybroker.com/en/latest/index.html) motivates separating execution integrity, unseen-data validation and return uncertainty. This app evaluates submitted evidence; it does not execute PyBroker or certify the underlying backtests. Aggregate market statistics cannot support a return-path bootstrap: obtain dated per-bar equity or returns from the source engine for that analysis.
+
+Run the dependency-free checks with Node.js 24:
+
+```sh
+node --test tests/*.test.cjs
+```
+
+Repository applicability inventory: [PyBroker coverage](docs/PYBROKER_COVERAGE.md).
